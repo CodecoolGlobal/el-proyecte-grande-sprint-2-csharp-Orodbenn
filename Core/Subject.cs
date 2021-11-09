@@ -8,6 +8,8 @@ namespace Core
 {
     public enum Subject
     {
-
+        Történelem, Irodalom, Nyelvtan, Biológia, Kémia, Fizika, Matematika, Földrajz,
+        Informatika, Angol, Német, TársadalomTudomány, Testnevelés, ÉnekÉsZene,
+        Rajz, DémonIdézés, VámpírVadászat
     }
 }
