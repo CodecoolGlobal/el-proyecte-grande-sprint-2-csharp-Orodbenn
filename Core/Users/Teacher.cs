@@ -16,6 +16,13 @@ namespace Core.Users
             this.schoolClass = schoolClass;
         }
 
-        
+        public void addSubject(Subject subjectToAdd)
+        {
+            subjects.Add(subjectToAdd);
+        }
+        public void removeSubject(Subject subjectToRemove)
+        {
+            subjects.Remove(subjectToRemove);
+        }
     }
 }
