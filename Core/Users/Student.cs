@@ -8,6 +8,8 @@ namespace Core.Users
 {
     class Student : User
     {
-
+        public Student(string name, int age, string phoneNumber, string personalId) : base(name, age, phoneNumber, personalId)
+        {
+        }
     }
 }
