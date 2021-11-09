@@ -12,6 +12,7 @@ namespace Core.Users
 
         public Parent(string name, int age, string phoneNumber, string personalId) : base(name, age, phoneNumber, personalId)
         {
+            students = new HashSet<Student>();
         }
     }
 }
