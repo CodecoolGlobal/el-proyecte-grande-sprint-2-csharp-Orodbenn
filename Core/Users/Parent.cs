@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Users
 {
-    class Parent : User
+    public class Parent : User
     {
         public HashSet<Student> students = new HashSet<Student>();
 

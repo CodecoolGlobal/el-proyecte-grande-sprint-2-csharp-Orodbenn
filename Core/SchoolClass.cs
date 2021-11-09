@@ -7,7 +7,7 @@ using Core.Users;
 
 namespace Core
 {
-    class SchoolClass
+    public class SchoolClass
     {
         private int grade;
         private string classIdentifier; // 9a vs 9b and so on

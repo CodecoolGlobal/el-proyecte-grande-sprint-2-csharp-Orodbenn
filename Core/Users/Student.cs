@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Core.Users
 {
-    class Student : User
+    public class Student : User
     {
         public List<Mark> marks { get; set; }
         public HashSet<Parent> parents { get; set; }

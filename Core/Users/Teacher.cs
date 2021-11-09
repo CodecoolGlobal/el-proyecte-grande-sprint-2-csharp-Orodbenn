@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Users
 {
-    class Teacher : User
+    public class Teacher : User
     {
         public List<Subject> subjects = new List<Subject>();
 
