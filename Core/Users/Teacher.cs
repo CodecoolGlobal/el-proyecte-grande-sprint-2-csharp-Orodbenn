@@ -8,9 +8,14 @@ namespace Core.Users
 {
     class Teacher : User
     {
-        public Teacher(string name, int age, string phoneNumber, string personalId) : base(name, age, phoneNumber, personalId)
-        {
+        public List<Subject> subjects = new List<Subject>();
 
+        SchoolClass schoolClass { get; set; }
+        public Teacher(string name, int age, string phoneNumber, string personalId, SchoolClass schoolClass) : base(name, age, phoneNumber, personalId)
+        {
+            this.schoolClass = schoolClass;
         }
+
+        
     }
 }
