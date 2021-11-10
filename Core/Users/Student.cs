@@ -36,5 +36,10 @@ namespace Core.Users
         {
             exams.Add(subject, date);
         }
+
+        public void AddMark(Mark mark)
+        {
+            marks.Add(mark);
+        }
     }
 }

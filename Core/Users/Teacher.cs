@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Marks;
 
 namespace Core.Users
 {
@@ -43,6 +44,11 @@ namespace Core.Users
         public void AddExam(SchoolClass classForExam, Subject subject, DateTime timeOfExam)
         {
             classForExam.Students.ForEach(student => student.AddExam(subject, timeOfExam));
+        }
+
+        public void GiveMark(Student student, byte mark, MarkWeight weight, Subject subject)
+        {
+            student.AddMark(new Mark(mark, this, subject, weight));
         }
     }
 }

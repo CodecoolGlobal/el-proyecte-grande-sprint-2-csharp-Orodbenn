@@ -11,6 +11,7 @@ namespace Core.Users
         public string name { get; set; }
         private DateTime DateOfBirth { get; }
         public int PhoneNumber { get; set; }
+        public string Email { get; set; }
         public string PersonalId { get; set; }
 
         protected User(string name)

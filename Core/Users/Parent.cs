@@ -16,17 +16,18 @@ namespace Core.Users
             student.parents.Add(this);
             AssignId(student);
         }
-        
-        public void addStudent(Student studentToAdd)
-        {
-            students.Add(studentToAdd);
-        }
 
         private void AssignId(Student student)
         {
             string id = student.PersonalId;
             id = id.Substring(0, 1).Replace("S", "P");
             PersonalId = id;
+        }
+        
+        public void addStudent(Student studentToAdd)
+        {
+            students.Add(studentToAdd);
+            studentToAdd.parents.Add(this);
         }
     }
 }
