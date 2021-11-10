@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Core.Users
 {
-   public abstract class User
+    public abstract class User
     {
         public string name { get; set; }
         private DateTime DateOfBirth { get; }

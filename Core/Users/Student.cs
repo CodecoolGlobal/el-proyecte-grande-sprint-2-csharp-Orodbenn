@@ -11,6 +11,9 @@ namespace Core.Users
     {
         public List<Mark> marks { get; set; }
         public HashSet<Parent> parents { get; set; }
+        public Dictionary<Subject, Dictionary<DateTime, string>> homeworks { get; }
+        public Dictionary<Subject, DateTime> exams;
+
         public Student(string name, DateTime dateOfBirth, string classId) : base(name, dateOfBirth)
         {
             marks = new List<Mark>();
@@ -22,6 +25,16 @@ namespace Core.Users
         {
             PersonalId = "S" + DateTime.Now.Year + classId + name.Substring(0, 1).ToUpper() + 
                          name.Substring(name.IndexOf(" "), 2).ToUpper();
+        }
+
+        public void AddHomeWork(Subject subject, Dictionary<DateTime, string> homework)
+        {
+            homeworks.Add(subject, homework);
+        }
+
+        public void AddExam(Subject subject, DateTime date)
+        {
+            exams.Add(subject, date);
         }
     }
 }

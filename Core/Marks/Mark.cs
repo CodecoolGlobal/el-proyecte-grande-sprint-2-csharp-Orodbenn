@@ -17,23 +17,11 @@ namespace Core.Marks
 
        public Mark(byte mark, Teacher assigningTeacher, Subject subject, MarkWeight weight)
        {
-           MarkValidation(mark);
+           this.mark = mark;
            this.assigningTeacher = assigningTeacher;
            this.subject = subject;
            this.weight = weight;
            dateOfAssignment = DateTime.Now;
-       }
-
-       private void MarkValidation(byte mark)
-       {
-           if (mark >= 1 || mark <= 5)
-           {
-               this.mark = mark;
-           }
-           else
-           {
-               throw new Exception(); // TODO implement exception
-           }
        }
    }
 }
