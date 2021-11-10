@@ -8,6 +8,6 @@ namespace Core.Marks
 {
    public enum MarkWeight
     {
-        Féljegy = 50, NormálJegy = 100, Témazáró = 200, Vizsga = 400
+        HalfWeight = 50, NormalWeight = 100, DoubleWeight = 200, ExamWeight = 400
     }
 }
