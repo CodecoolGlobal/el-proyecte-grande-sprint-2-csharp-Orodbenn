@@ -10,9 +10,11 @@ namespace Core.Users
     {
         public HashSet<Student> students = new HashSet<Student>();
 
-        public Parent(string name, int age, string phoneNumber, string personalId) : base(name, age, phoneNumber, personalId)
+        public Parent(string name, Student student) : base(name)
         {
-            
+            students.Add(student);
+            student.parents.Add(this); //TODO check if it works this way
+            AssignId(student);
         }
         
         public void addStudent(Student studentToAdd)
@@ -20,11 +22,11 @@ namespace Core.Users
             students.Add(studentToAdd);
         }
 
-        public void removeStudent(Student studentToRemove)
+        private void AssignId(Student student)
         {
-            students.Remove(studentToRemove);
+            string id = student.PersonalId;
+            id = id.Substring(0, 1).Replace("S", "P");
+            PersonalId = id;
         }
-
-
     }
 }

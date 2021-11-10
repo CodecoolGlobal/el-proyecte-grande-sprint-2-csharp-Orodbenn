@@ -10,7 +10,7 @@ namespace Core
     public class SchoolClass
     {
         private int grade;
-        private string classIdentifier; // 9a vs 9b and so on
+        private string classIdentifier { get; } // 9a vs 9b and so on
         private List<Student> students = new List<Student>();
         private List<Teacher> teachersOfTheClass = new List<Teacher>();
         private int classRoom { get; set; } // can be changed if letters are involved as well
@@ -19,7 +19,7 @@ namespace Core
         {
             this.classIdentifier = classIdentifier.ToLower();
             this.classRoom = classRoom;
-            grade = 9;
+            grade = 9; // based on regular high schools
         }
 
         public void yearPassing()

@@ -9,11 +9,10 @@ namespace Core.Users
     public class Teacher : User
     {
         public List<Subject> subjects = new List<Subject>();
-
-        SchoolClass schoolClass { get; set; }
-        public Teacher(string name, int age, string phoneNumber, string personalId, SchoolClass schoolClass) : base(name, age, phoneNumber, personalId)
+        
+        public Teacher(string name) : base(name)
         {
-            this.schoolClass = schoolClass;
+            AssignId();
         }
 
         public void addSubject(Subject subjectToAdd)
@@ -23,6 +22,12 @@ namespace Core.Users
         public void removeSubject(Subject subjectToRemove)
         {
             subjects.Remove(subjectToRemove);
+        }
+
+        private void AssignId()
+        {
+            PersonalId = "T" + name.Substring(0, 1).ToUpper() +
+                         name.Substring(name.IndexOf(" "), 2).ToUpper();
         }
     }
 }
