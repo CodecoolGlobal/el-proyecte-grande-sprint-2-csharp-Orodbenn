@@ -9,7 +9,7 @@ namespace Core
 {
     public class SchoolClass
     {
-        private int grade;
+        public int grade { get; set; }
         private string classIdentifier { get; } // 9a vs 9b and so on
         private List<Student> students = new List<Student>();
         private List<Teacher> teachersOfTheClass = new List<Teacher>();

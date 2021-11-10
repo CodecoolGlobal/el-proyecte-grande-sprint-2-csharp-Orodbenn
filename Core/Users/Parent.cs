@@ -13,7 +13,7 @@ namespace Core.Users
         public Parent(string name, Student student) : base(name)
         {
             students.Add(student);
-            student.parents.Add(this); //TODO check if it works this way
+            student.parents.Add(this);
             AssignId(student);
         }
         
