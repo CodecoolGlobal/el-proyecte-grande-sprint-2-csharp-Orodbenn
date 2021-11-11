@@ -9,6 +9,24 @@ namespace Core
         private HashSet<Teacher> teachersOfTheSchool = new HashSet<Teacher>();
         public HashSet<StudentClass> classesInTheSchool = new HashSet<StudentClass>();
 
+        public School(int numberOfClasses)
+        {
+            addNewClasses(numberOfClasses);
+        }
+
+        public StudentClass GetStudentClass(string classId)
+        {
+            foreach (var studentClass in classesInTheSchool)
+            {
+                if (studentClass.getClassName() == classId)
+                {
+                    return studentClass;
+                }
+            }
+
+            return null;
+        }
+
         public void addTeacher(Teacher teacher)
         {
             teachersOfTheSchool.Add(teacher);

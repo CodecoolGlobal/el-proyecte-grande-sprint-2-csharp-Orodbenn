@@ -26,6 +26,19 @@ namespace Core
             grade++;
         }
 
+        public Student GetStudent(string studentId)
+        {
+            foreach (var student in students)
+            {
+                if (student.PersonalId == studentId)
+                {
+                    return student;
+                }
+            }
+
+            return null;
+        }
+
         public void addStudent(Student student)
         {
             students.Add(student);

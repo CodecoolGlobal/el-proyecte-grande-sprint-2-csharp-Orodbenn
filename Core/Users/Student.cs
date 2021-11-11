@@ -27,6 +27,11 @@ namespace Core.Users
                          name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
         }
 
+        public void AddParent(Parent parent)
+        {
+            parents.Add(parent);
+        }
+
         public void AddHomeWork(Subject subject, Dictionary<DateTime, string> homework)
         {
             homeworks.Add(subject, homework);
