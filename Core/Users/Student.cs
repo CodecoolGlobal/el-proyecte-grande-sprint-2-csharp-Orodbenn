@@ -18,7 +18,7 @@ namespace Core.Users
         {
             marks = new List<Mark>();
             parents = new HashSet<Parent>();
-            AssignId(classId);
+           // AssignId(classId);
         }
 
         private void AssignId(string classId)
