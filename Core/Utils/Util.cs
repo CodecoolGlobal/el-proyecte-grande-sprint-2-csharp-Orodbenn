@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Core.Marks;
 
 namespace Core.Utils
 {
@@ -51,6 +52,23 @@ namespace Core.Utils
 
                 default:
                     return Subject.VampireHunting;
+            }
+        }
+        public MarkWeight checkMarkweight(string mw)
+        {
+            switch (mw)
+            {
+                case "HalfWeight":
+                    return MarkWeight.HalfWeight;
+                case "NormalWeight":
+                    return MarkWeight.NormalWeight;
+                case "DoubleWeight":
+                    return MarkWeight.DoubleWeight;
+                case "ExamWeight":
+                    return MarkWeight.ExamWeight;
+
+                default:
+                    return MarkWeight.NormalWeight;
             }
         }
     }
