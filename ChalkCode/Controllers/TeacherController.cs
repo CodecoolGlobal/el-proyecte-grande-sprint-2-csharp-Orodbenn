@@ -15,15 +15,15 @@ namespace ChalkCode.Controllers
     {
         Teacher Teacher = new Teacher("Teacher Bob");
 
-        /*
+        
         [HttpGet]
-        [Route("/showHomeworks")]
-        public Dictionary<StudentClass, Dictionary<DateTime, string>> showHomeworks()
+        [Route("/showhomeworks")]
+        public List<Homework> showHomeworks()
         {
-            return Teacher.getHomeworks();
+            return Teacher.homeworks;
         }
 
-        */
+       
 
     }
 }

@@ -10,9 +10,10 @@ namespace Core.Users
     public class Teacher : User
     {
         public List<Subject> subjects = new List<Subject>();
-        private List<Homework> homeworks = new List<Homework>();
+        public List<Homework> homeworks { get; }
         public Teacher(string name) : base(name)
         {
+            homeworks = new List<Homework>();
             AssignId();
         }
 
