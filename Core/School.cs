@@ -6,8 +6,8 @@ namespace Core
 {
     public class School
     {
-        private HashSet<Teacher> teachersOfTheSchool;
-        private HashSet<StudentClass> classesInTheSchool;
+        private HashSet<Teacher> teachersOfTheSchool = new HashSet<Teacher>();
+        public HashSet<StudentClass> classesInTheSchool = new HashSet<StudentClass>();
 
         public void addTeacher(Teacher teacher)
         {
@@ -30,7 +30,7 @@ namespace Core
             int AsciiForA = 65;
             for(int i = 0; i < numberOfNewClasses; i++)
             {
-                StudentClass newClass = new StudentClass(((char) AsciiForA + i).ToString(), classRoom);
+                StudentClass newClass = new StudentClass((Convert.ToChar(AsciiForA + i)).ToString(), classRoom);
                 classesInTheSchool.Add(newClass);
             }
         }

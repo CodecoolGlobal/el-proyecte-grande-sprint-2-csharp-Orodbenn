@@ -10,14 +10,14 @@ namespace Core
     public class StudentClass
     {
         public int grade { get; set; }
-        private string classIdentifier { get; } // 9a vs 9b and so on
+        public string classIdentifier { get; } // 9a vs 9b and so on
         private List<Student> students = new List<Student>();
         private List<Teacher> teachersOfTheClass = new List<Teacher>();
         private int classRoom { get; set; } // can be changed if letters are involved as well
 
         public StudentClass(string classIdentifier, int classRoom)
         {
-            this.classIdentifier = classIdentifier.ToLower();
+            this.classIdentifier = classIdentifier;
             this.classRoom = classRoom;
             grade = 9; // based on regular high schools
         }
@@ -53,7 +53,7 @@ namespace Core
 
         public string getClassName()
         {
-            return grade + "/" + classIdentifier;
+            return grade + classIdentifier;
         }
     }
 }
