@@ -6,12 +6,17 @@ namespace Core
 {
     public class School
     {
-        private HashSet<Teacher> teachersOfTheSchool;
-        private HashSet<StudentClass> classesInTheSchool;
+        private HashSet<Teacher> teachersOfTheSchool = new HashSet<Teacher>();
+        public List<StudentClass> classesInTheSchool = new List<StudentClass>();
 
         public void addTeacher(Teacher teacher)
         {
             teachersOfTheSchool.Add(teacher);
+        }
+
+        public List<StudentClass> getStudentClass()
+        {
+            return classesInTheSchool;
         }
         
         public void removeTeacher(Teacher teacher)
@@ -21,7 +26,8 @@ namespace Core
 
         public void endOfYear()
         {
-            classesInTheSchool.RemoveWhere(SchoolClass => SchoolClass.grade <= 12);
+            //classesInTheSchool.RemoveWhere(SchoolClass => SchoolClass.grade <= 12);
+
             classesInTheSchool.GetEnumerator().Current.yearPassing();
         }
 

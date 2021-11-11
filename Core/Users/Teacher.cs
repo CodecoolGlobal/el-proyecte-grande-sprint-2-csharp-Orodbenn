@@ -10,7 +10,7 @@ namespace Core.Users
     public class Teacher : User
     {
         public List<Subject> subjects = new List<Subject>();
-        public List<Homework> homeworks { get; }
+        private List<Homework> homeworks { get; }
         public Teacher(string name) : base(name)
         {
             homeworks = new List<Homework>();
@@ -36,7 +36,10 @@ namespace Core.Users
         {
             homeworks.Add(homework);
         }
-
+        public List<Homework> GetHomeworks()
+        {
+            return homeworks;
+        }
         public void AddExam(StudentClass classForExam, Subject subject, DateTime timeOfExam)
         {
             classForExam.Students.ForEach(student => student.AddExam(subject, timeOfExam));
