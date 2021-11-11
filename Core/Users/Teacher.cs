@@ -10,8 +10,7 @@ namespace Core.Users
     public class Teacher : User
     {
         public List<Subject> subjects = new List<Subject>();
-        private Dictionary<StudentClass, Dictionary<DateTime, string>> homeworks { get; }
-
+        private List<Homework> homeworks = new List<Homework>();
         public Teacher(string name) : base(name)
         {
             AssignId();
@@ -32,13 +31,9 @@ namespace Core.Users
                          name.Substring(name.IndexOf(" "), 2).ToUpper();
         }
 
-        public void AddHomeWork(StudentClass classForAssignment, string description, Subject subject)
+        public void AddHomeWork(Homework homework)
         {
-            Dictionary<DateTime, string> homework = new Dictionary<DateTime, string>();
-            homework.Add(DateTime.Now, description);
-            
-            homeworks.Add(classForAssignment, homework);
-            classForAssignment.Students.ForEach(student => student.AddHomeWork(subject, homework));
+            homeworks.Add(homework);
         }
 
         public void AddExam(StudentClass classForExam, Subject subject, DateTime timeOfExam)
