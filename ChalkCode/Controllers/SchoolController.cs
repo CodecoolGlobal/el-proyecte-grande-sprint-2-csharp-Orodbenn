@@ -13,21 +13,22 @@ namespace ChalkCode.Controllers
     [ApiController]
     public class SchoolController
     {
+        School school = new School(); //          placeholder
+        
         [Route("/get-class/{classname}")]
         [HttpGet]
         public StudentClass GetSpecificStudentClass(string classname)
         {
             Console.WriteLine(classname);
-            School dummy = new School();
-            dummy.addNewClasses(3);
+            school.addNewClasses(3);
             Student student = new Student("asd asd", DateTime.Now, "9A");
-            foreach (var studentClass in dummy.classesInTheSchool)
+            foreach (var studentClass in school.classesInTheSchool)
             {
                 studentClass.addStudent(student);
             }
             //for testing ^^^
 
-            foreach (var studentClass in dummy.classesInTheSchool)
+            foreach (var studentClass in school.classesInTheSchool)
             {
                 if (studentClass.getClassName() == classname)
                 {
@@ -42,11 +43,40 @@ namespace ChalkCode.Controllers
         [HttpPost]
         public void AddNewClasses([FromBody]Dictionary<string, string> postBody)
         {
-            School school = new School(); // placeholder
             foreach (var KVPair in postBody)
             {
                 school.addNewClasses(Int32.Parse(KVPair.Value));
             }
+        }
+
+        [Route("/get-student/{studentId}")]
+        [HttpGet]
+        public Student GetStudent(string studentId)
+        {
+            return FindStudent(studentId);
+        }
+
+        [Route("/get-parents-of-student/{studentId}")]
+        [HttpGet]
+        public HashSet<Parent> GetParentsOfAStudent(string studentId)
+        {
+            return FindStudent(studentId).parents;
+        }
+
+        private Student FindStudent(string studentId)
+        {
+            foreach (var studentClass in school.classesInTheSchool)
+            {
+                foreach (var student in studentClass.Students)
+                {
+                    if (student.PersonalId == studentId)
+                    {
+                        return student;
+                    }
+                }
+            }
+
+            return null;
         }
 
         /* unfinished code, might be useful
