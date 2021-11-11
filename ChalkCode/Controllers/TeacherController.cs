@@ -16,7 +16,7 @@ namespace ChalkCode.Controllers
     public class TeacherController : ControllerBase
     {
         Teacher Teacher = new Teacher("Teacher Bob");
-        School school = new School();
+        School school = new School(1);
         Util util = new Util();
         Student bob = new Student("Bob", DateTime.Parse("12 July, 2009"), "1111");
 
@@ -32,7 +32,7 @@ namespace ChalkCode.Controllers
         [Route("/givehomework")]
         public void addHomework([FromBody] Dictionary<string, string> response)
         {
-            school.addNewClasses(1, 101);
+            school.addNewClasses(1);
             Homework homework = new Homework(school.classesInTheSchool[0], util.checkSubject(response["Subject"]), response["Description"]);
             Teacher.AddHomeWork(homework);
         }
@@ -40,7 +40,7 @@ namespace ChalkCode.Controllers
         [Route("/setupexam")]
         public void CreateExam([FromBody] Dictionary<string,string>response)
         {
-            school.addNewClasses(1, 101);
+            school.addNewClasses(1);
             Teacher.AddExam(school.classesInTheSchool[0], util.checkSubject(response["Subject"]),DateTime.Parse(response["Date"]));
         }
 
