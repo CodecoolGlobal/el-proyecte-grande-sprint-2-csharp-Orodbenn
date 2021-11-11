@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Core.Users;
 using Core;
 using Core.Utils;
+using Core.Marks;
 
 namespace ChalkCode.Controllers
 {
@@ -17,7 +18,7 @@ namespace ChalkCode.Controllers
         Teacher Teacher = new Teacher("Teacher Bob");
         School school = new School();
         Util util = new Util();
-
+        Student bob = new Student("Bob", DateTime.Parse("12 July, 2009"), "1111");
 
 
         [HttpGet]
@@ -40,9 +41,17 @@ namespace ChalkCode.Controllers
         public void CreateExam([FromBody] Dictionary<string,string>response)
         {
             school.addNewClasses(1, 101);
-            var jsndate = DateTime.Parse(response["Date"]);
-            Teacher.AddExam(school.classesInTheSchool[0], util.checkSubject(response["Subject"]), jsndate);
+            Teacher.AddExam(school.classesInTheSchool[0], util.checkSubject(response["Subject"]),DateTime.Parse(response["Date"]));
         }
+
+        [HttpPost]
+        [Route("/givemark")]
+        public void AddMark([FromBody] Dictionary<string,string> response)
+        {
+            Mark mark = new Mark(int.Parse(response["Mark"]), Teacher, util.checkSubject(response["Subject"]), util.checkMarkweight(response["MarkWeight"]));
+            Teacher.GiveMark(mark, bob);
+        }
+       
 
 
 
