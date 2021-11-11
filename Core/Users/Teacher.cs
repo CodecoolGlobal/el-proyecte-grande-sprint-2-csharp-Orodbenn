@@ -45,9 +45,9 @@ namespace Core.Users
             classForExam.Students.ForEach(student => student.AddExam(subject, timeOfExam));
         }
 
-        public void GiveMark(Student student, byte mark, MarkWeight weight, Subject subject)
+        public void GiveMark(Mark mark, Student student)
         {
-            student.AddMark(new Mark(mark, this, subject, weight));
+            student.AddMark(mark);
         }
     }
 }
