@@ -23,8 +23,13 @@ namespace Core.Users
 
         private void AssignId(string classId)
         {
-            PersonalId = "S" + DateTime.Now.Year + classId + name.Substring(0, 1).ToUpper() + 
-                         name.Substring(name.IndexOf(" "), 2).ToUpper();
+            PersonalId = "S" + DateTime.Now.Year + classId[^1] + name.Substring(0, 1).ToUpper() + 
+                         name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
+        }
+
+        public void AddParent(Parent parent)
+        {
+            parents.Add(parent);
         }
 
         public void AddHomeWork(Subject subject, Dictionary<DateTime, string> homework)

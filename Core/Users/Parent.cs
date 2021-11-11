@@ -23,11 +23,5 @@ namespace Core.Users
             id = id.Substring(0, 1).Replace("S", "P");
             PersonalId = id;
         }
-        
-        public void addStudent(Student studentToAdd)
-        {
-            students.Add(studentToAdd);
-            studentToAdd.parents.Add(this);
-        }
     }
 }
