@@ -11,15 +11,15 @@ namespace Core
     {
         StudentClass studentClass;
         Subject Subject;
-        Teacher Teacher;
+        string description;
         DateTime date;
 
-        public Homework(StudentClass studentClass, Subject subject, Teacher teacher, DateTime date)
+        public Homework(StudentClass studentClass, Subject subject, String desc)
         {
             this.studentClass = studentClass;
             Subject = subject;
-            Teacher = teacher;
-            this.date = date;
+            date = DateTime.Now;
+            description = desc;
         }
     }
 }
