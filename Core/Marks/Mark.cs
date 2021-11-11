@@ -9,13 +9,13 @@ namespace Core.Marks
 {
    public class Mark
    {
-       private byte mark;
+       private int mark;
        private Teacher assigningTeacher;
        private Subject subject;
        private DateTime dateOfAssignment;
        private MarkWeight weight;
 
-       public Mark(byte mark, Teacher assigningTeacher, Subject subject, MarkWeight weight)
+       public Mark(int mark, Teacher assigningTeacher, Subject subject, MarkWeight weight)
        {
            this.mark = mark;
            this.assigningTeacher = assigningTeacher;
