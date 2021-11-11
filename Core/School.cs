@@ -25,12 +25,12 @@ namespace Core
             classesInTheSchool.GetEnumerator().Current.yearPassing();
         }
 
-        public void addNewClasses(int numberOfNewClasses, int classRoom)
+        public void addNewClasses(int numberOfNewClasses)
         {
             int AsciiForA = 65;
             for(int i = 0; i < numberOfNewClasses; i++)
             {
-                StudentClass newClass = new StudentClass((Convert.ToChar(AsciiForA + i)).ToString(), classRoom);
+                StudentClass newClass = new StudentClass((Convert.ToChar(AsciiForA + i)).ToString());
                 classesInTheSchool.Add(newClass);
             }
         }

@@ -13,12 +13,11 @@ namespace Core
         public string classIdentifier { get; } // 9a vs 9b and so on
         private List<Student> students = new List<Student>();
         private List<Teacher> teachersOfTheClass = new List<Teacher>();
-        private int classRoom { get; set; } // can be changed if letters are involved as well
+        public int classRoom { get; set; } // can be changed if letters are involved as well
 
-        public StudentClass(string classIdentifier, int classRoom)
+        public StudentClass(string classIdentifier)
         {
             this.classIdentifier = classIdentifier;
-            this.classRoom = classRoom;
             grade = 9; // based on regular high schools
         }
 
