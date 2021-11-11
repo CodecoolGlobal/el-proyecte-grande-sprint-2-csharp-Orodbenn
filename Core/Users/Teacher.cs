@@ -29,7 +29,7 @@ namespace Core.Users
         private void AssignId()
         {
             PersonalId = "T" + name.Substring(0, 1).ToUpper() +
-                         name.Substring(name.IndexOf(" "), 2).ToUpper();
+                         name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
         }
 
         public void AddHomeWork(Homework homework)
