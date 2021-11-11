@@ -7,7 +7,7 @@ namespace Core
     public class School
     {
         private HashSet<Teacher> teachersOfTheSchool;
-        private HashSet<SchoolClass> classesInTheSchool;
+        private HashSet<StudentClass> classesInTheSchool;
 
         public void addTeacher(Teacher teacher)
         {
@@ -30,7 +30,7 @@ namespace Core
             int AsciiForA = 65;
             for(int i = 0; i < numberOfNewClasses; i++)
             {
-                SchoolClass newClass = new SchoolClass(((char) AsciiForA + i).ToString(), classRoom);
+                StudentClass newClass = new StudentClass(((char) AsciiForA + i).ToString(), classRoom);
                 classesInTheSchool.Add(newClass);
             }
         }

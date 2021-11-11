@@ -12,7 +12,7 @@ namespace ChalkCode.Controllers
     {
         [Route("/classes")]
         [HttpGet]
-        public HashSet<SchoolClass> GetClasses()
+        public HashSet<StudentClass> GetClasses()
         {
             return null; // school.classesInTheSchool;
         }

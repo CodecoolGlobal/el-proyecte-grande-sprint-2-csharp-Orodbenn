@@ -7,7 +7,7 @@ using Core.Users;
 
 namespace Core
 {
-    public class SchoolClass
+    public class StudentClass
     {
         public int grade { get; set; }
         private string classIdentifier { get; } // 9a vs 9b and so on
@@ -15,7 +15,7 @@ namespace Core
         private List<Teacher> teachersOfTheClass = new List<Teacher>();
         private int classRoom { get; set; } // can be changed if letters are involved as well
 
-        public SchoolClass(string classIdentifier, int classRoom)
+        public StudentClass(string classIdentifier, int classRoom)
         {
             this.classIdentifier = classIdentifier.ToLower();
             this.classRoom = classRoom;
