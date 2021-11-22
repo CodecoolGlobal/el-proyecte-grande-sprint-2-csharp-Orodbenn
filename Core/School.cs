@@ -8,10 +8,18 @@ namespace Core
     {
         private HashSet<Teacher> teachersOfTheSchool = new HashSet<Teacher>();
         public List<StudentClass> classesInTheSchool = new List<StudentClass>();
-        public School(int numberOfClasses)
+        public School school { get; }
+        public School()
         {
-            addNewClasses(numberOfClasses);
+            
         }
+        
+        /*private IRepository<Room> Repository { get; }
+
+        public RoomService(IRepository<Room> repository)
+        {
+            Repository = repository;
+        }*/
 
         public StudentClass GetStudentClass(string classId)
         {

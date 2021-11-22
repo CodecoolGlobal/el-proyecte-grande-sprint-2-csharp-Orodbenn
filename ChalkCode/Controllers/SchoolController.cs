@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Core;
+using Core.DAL;
 using Core.Users;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,7 +14,13 @@ namespace ChalkCode.Controllers
     [ApiController]
     public class SchoolController
     {
-        School school = new School(1); //          placeholder
+
+        public School school;
+
+        public SchoolController(IRepository<School> repo)
+        {
+            school = repo.GetSchool();
+        }
 
         [Route("/class/{studentClass}/get-room")]
         [HttpGet]
@@ -92,9 +99,9 @@ namespace ChalkCode.Controllers
          */
         [Route("/add-new-classes")]
         [HttpPost]
-        public void AddNewClasses([FromBody] Dictionary<string, string> postBody)
+        public void AddNewClasses([FromBody] Dictionary<string, int> postBody)
         {
-            school.addNewClasses(Int32.Parse(postBody["numberOfClasses"]));
+            school.addNewClasses(postBody["numberOfClasses"]);
         }
 
         [Route("/end-of-year")]
@@ -148,16 +155,14 @@ namespace ChalkCode.Controllers
 
             return null;
         }
-
-        /* unfinished code, might be useful
-         
-        [Route("/every-class")]
+        
+        [Route("/list-classes")]
         [HttpGet]
-        public HashSet<StudentClass> GetClasses(School school)
+        public List<StudentClass> GetClasses()
         {
             return school.classesInTheSchool;
         }
-
+/*
         [Route("/classes")]
         [HttpPost]
         public void AddClasses([FromBody] JsonContent body)
