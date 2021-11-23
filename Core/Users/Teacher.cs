@@ -17,6 +17,11 @@ namespace Core.Users
             AssignId();
         }
 
+        public Teacher()
+        {
+
+        }
+
         public void addSubject(Subject subjectToAdd)
         {
             subjects.Add(subjectToAdd);
