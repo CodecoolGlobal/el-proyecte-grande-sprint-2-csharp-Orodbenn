@@ -14,12 +14,12 @@ namespace Core.Users
         public Teacher(string name) : base(name)
         {
             homeworks = new List<Homework>();
-            AssignId();
+            Id = Guid.NewGuid();
         }
 
         public Teacher()
         {
-
+            Id = Guid.NewGuid();
         }
 
         public void addSubject(Subject subjectToAdd)
@@ -31,11 +31,11 @@ namespace Core.Users
             subjects.Remove(subjectToRemove);
         }
 
-        private void AssignId()
+        /*private void AssignId()
         {
             PersonalId = "T" + name.Substring(0, 1).ToUpper() +
                          name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
-        }
+        }*/
 
         public void AddHomeWork(Homework homework)
         {

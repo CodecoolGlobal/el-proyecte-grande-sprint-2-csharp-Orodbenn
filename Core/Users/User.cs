@@ -9,6 +9,9 @@ namespace Core.Users
     public abstract class User
     {
         public string name { get; set; }
+
+        public Guid Id { get; set; }
+
         private DateTime DateOfBirth { get; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }

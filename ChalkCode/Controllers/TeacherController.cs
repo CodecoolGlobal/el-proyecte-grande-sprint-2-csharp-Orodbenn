@@ -29,7 +29,18 @@ namespace ChalkCode.Controllers
             return Ok(_school.GetTeachers());
         }
 
+        [Route("school/teacher/{id}")]
+        public ActionResult getTeacher(string id)
+        {
+            var teachers = _school.GetTeachers()
+                .FirstOrDefault(t => t.Id.ToString() == id);
+            if (teachers == null)
+            {
+                return NotFound();
+            }
+            return Ok(teachers);
 
+        }
 
 
 

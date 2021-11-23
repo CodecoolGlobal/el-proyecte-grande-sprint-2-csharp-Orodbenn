@@ -14,6 +14,10 @@ namespace Core
             {
                 name = "Bob",
 
+            },
+            new Teacher()
+            {
+                name = "NOT Bob",
             }
         };
         
