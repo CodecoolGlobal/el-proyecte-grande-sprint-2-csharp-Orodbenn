@@ -2,21 +2,16 @@ namespace Core.DAL
 {
     public class SchoolRepository : IRepository<School>
     {
-        public static School school { get; set; }
+        private static School _school;
 
         public SchoolRepository()
         {
-            school = new School();
-        }
-
-        public static School GetSchool()
-        {
-            return school;
+            _school = new School();
         }
 
         School IRepository<School>.GetSchool()
         {
-            return GetSchool();
+            return _school;
         }
     }
 }
