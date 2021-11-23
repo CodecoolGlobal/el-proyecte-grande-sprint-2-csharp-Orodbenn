@@ -24,5 +24,10 @@ namespace Core.Users
             this.name = name;
             DateOfBirth = dateOfBirth;
         }
+
+        protected User()
+        {
+
+        }
     }
 }
