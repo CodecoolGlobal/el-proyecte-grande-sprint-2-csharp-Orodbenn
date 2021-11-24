@@ -8,7 +8,7 @@ namespace Core
     public class School
     {
         private Guid SchoolId = Guid.NewGuid();
-        private List<Teacher> _teachersOfTheSchool = new List<Teacher>()
+        public List<Teacher> _teachersOfTheSchool = new List<Teacher>()
         {
             new Teacher()
             {
@@ -18,7 +18,21 @@ namespace Core
             new Teacher()
             {
                 name = "NOT Bob",
+                homeworks =             {
+               new Homework()
+               {
+                   studentClass = null,
+                   Subject = Subject.Literature,
+                   description = "Do literature"
+               },
+               new Homework()
+               {
+                   studentClass = null,
+                   Subject = Subject.Summoning,
+                   description = "Summon Archimonde, survive for 30 min"
+               }
             }
+    }
         };
         
         public List<StudentClass> _classesInTheSchool = new List<StudentClass>();
