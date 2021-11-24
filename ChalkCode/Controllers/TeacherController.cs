@@ -16,13 +16,14 @@ namespace ChalkCode.Controllers
     [ApiController]
     public class TeacherController : ControllerBase
     {
+        Util util = new Util();
         private School _school;
 
         public TeacherController(IRepository<School> repository)
         {
             _school = repository.GetSchool();
         }
-        [Route("school/teachers")]
+        [Route("school/teacher")]
         [HttpGet]
         public ActionResult getTeachers()
         {
@@ -30,6 +31,7 @@ namespace ChalkCode.Controllers
         }
 
         [Route("school/teacher/{id}")]
+        [HttpGet]
         public ActionResult getTeacher(string id)
         {
             var teachers = _school.GetTeachers()
@@ -42,7 +44,38 @@ namespace ChalkCode.Controllers
 
         }
 
+        [Route("school/teacher/{id}/showhomework")]
+        [HttpGet]
+        public ActionResult getHomeworks(string id)
+        {
+            var teachers = _school.GetTeachers()
+                .FirstOrDefault(t => t.Id.ToString() == id);
+            if (teachers == null)
+            {
+                return NotFound();
+            }
+            var homewokrs = teachers.GetHomeworks();
+            return Ok(homewokrs);
+        }
 
+       [Route ("school/teacher/{id}/addhomework")]
+        public ActionResult addHomework(string id,[FromBody] Dictionary<string,string> homework)
+        {
+            var teachers = _school.GetTeachers()
+                .FirstOrDefault(t => t.Id.ToString() == id);
+            if (teachers == null)
+            {
+                return NotFound();
+            }
+            Homework freshHomework = new Homework()
+            {
+                Subject = util.checkSubject(homework["Subject"]),
+                description = homework["Description"]
+            };
+            teachers.AddHomeWork(freshHomework);
+            return NoContent();
+        }
+       
 
     }
 }
