@@ -7,7 +7,34 @@ namespace Core
 {
     public class School
     {
-        private HashSet<Teacher> _teachersOfTheSchool = new HashSet<Teacher>();
+        private Guid SchoolId = Guid.NewGuid();
+        public List<Teacher> _teachersOfTheSchool = new List<Teacher>()
+        {
+            new Teacher()
+            {
+                name = "Bob",
+
+            },
+            new Teacher()
+            {
+                name = "NOT Bob",
+                homeworks =             {
+               new Homework()
+               {
+                   studentClass = null,
+                   Subject = Subject.Literature,
+                   description = "Do literature"
+               },
+               new Homework()
+               {
+                   studentClass = null,
+                   Subject = Subject.Summoning,
+                   description = "Summon Archimonde, survive for 30 min"
+               }
+            }
+    }
+        };
+        
         public List<StudentClass> _classesInTheSchool = new List<StudentClass>();
 
         public StudentClass GetStudentClass(string classId)
@@ -18,6 +45,11 @@ namespace Core
         public void AddTeacher(Teacher teacher)
         {
             _teachersOfTheSchool.Add(teacher);
+        }
+
+        public List<Teacher> GetTeachers()
+        {
+            return _teachersOfTheSchool;
         }
 
         public List<StudentClass> GetStudentClasses()
