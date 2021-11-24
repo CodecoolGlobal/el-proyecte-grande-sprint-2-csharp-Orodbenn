@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace Core
 {
+    [Serializable]
     public class Homework
     {
-        StudentClass studentClass;
-        Subject Subject;
-        string description;
-        DateTime date;
+        
+        public StudentClass studentClass { get; set; }
+        public Subject Subject { get; set; }
+        public string description { get; set; }
+        DateTime date { get; set; }
 
         public Homework(StudentClass studentClass, Subject subject, String desc)
         {
@@ -20,6 +22,10 @@ namespace Core
             Subject = subject;
             date = DateTime.Now;
             description = desc;
+        }
+        public Homework()
+        {
+            date = DateTime.Now;
         }
     }
 }

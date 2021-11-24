@@ -1,60 +1,84 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using Core.Users;
 
 namespace Core
 {
     public class School
     {
-        private HashSet<Teacher> teachersOfTheSchool = new HashSet<Teacher>();
-        public List<StudentClass> classesInTheSchool = new List<StudentClass>();
-        public School(int numberOfClasses)
+        private Guid SchoolId = Guid.NewGuid();
+        public List<Teacher> _teachersOfTheSchool = new List<Teacher>()
         {
-            addNewClasses(numberOfClasses);
-        }
+            new Teacher()
+            {
+                name = "Bob",
+
+            },
+            new Teacher()
+            {
+                name = "NOT Bob",
+                homeworks =             {
+               new Homework()
+               {
+                   studentClass = null,
+                   Subject = Subject.Literature,
+                   description = "Do literature"
+               },
+               new Homework()
+               {
+                   studentClass = null,
+                   Subject = Subject.Summoning,
+                   description = "Summon Archimonde, survive for 30 min"
+               }
+            }
+    }
+        };
+        
+        public List<StudentClass> _classesInTheSchool = new List<StudentClass>();
 
         public StudentClass GetStudentClass(string classId)
         {
-            foreach (var studentClass in classesInTheSchool)
+            return _classesInTheSchool.FirstOrDefault(studentClass => studentClass.getClassName() == classId);
+        }
+
+        public void AddTeacher(Teacher teacher)
+        {
+            _teachersOfTheSchool.Add(teacher);
+        }
+
+        public List<Teacher> GetTeachers()
+        {
+            return _teachersOfTheSchool;
+        }
+
+        public List<StudentClass> GetStudentClasses()
+        {
+            return _classesInTheSchool;
+        }
+
+        public void RemoveTeacher(Teacher teacher)
+        {
+            _teachersOfTheSchool.Remove(teacher);
+        }
+
+        public void EndOfYear()
+        {
+            if (_classesInTheSchool.Count <= 0) return; //TODO convert to exception
+            foreach (var studentClass in _classesInTheSchool.Where(studentClass => studentClass.grade >= 12))
             {
-                if (studentClass.getClassName() == classId)
-                {
-                    return studentClass;
-                }
+                _classesInTheSchool.Remove(studentClass);
             }
-
-            return null;
+            _classesInTheSchool.GetEnumerator().Current.yearPassing();
         }
 
-        public void addTeacher(Teacher teacher)
+        public void AddNewClasses(int numberOfNewClasses)
         {
-            teachersOfTheSchool.Add(teacher);
-        }
-
-        public List<StudentClass> getStudentClass()
-        {
-            return classesInTheSchool;
-        }
-        
-        public void removeTeacher(Teacher teacher)
-        {
-            teachersOfTheSchool.Remove(teacher);
-        }
-
-        public void endOfYear()
-        {
-            //classesInTheSchool.RemoveWhere(SchoolClass => SchoolClass.grade <= 12);
-
-            classesInTheSchool.GetEnumerator().Current.yearPassing();
-        }
-
-        public void addNewClasses(int numberOfNewClasses)
-        {
-            int AsciiForA = 65;
-            for(int i = 0; i < numberOfNewClasses; i++)
+            const int asciiForA = 65;
+            for (var i = 0; i < numberOfNewClasses; i++)
             {
-                StudentClass newClass = new StudentClass((Convert.ToChar(AsciiForA + i)).ToString());
-                classesInTheSchool.Add(newClass);
+                var newClass = new StudentClass((Convert.ToChar(asciiForA + i)).ToString());
+                _classesInTheSchool.Add(newClass);
             }
         }
     }

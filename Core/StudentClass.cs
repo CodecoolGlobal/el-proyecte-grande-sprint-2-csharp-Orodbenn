@@ -20,6 +20,10 @@ namespace Core
             this.classIdentifier = classIdentifier;
             grade = 9; // based on regular high schools
         }
+        public StudentClass()
+        {
+
+        }
 
         public void yearPassing()
         {

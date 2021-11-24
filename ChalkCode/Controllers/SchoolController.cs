@@ -5,28 +5,34 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using Core;
+using Core.DAL;
 using Core.Users;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChalkCode.Controllers
 {
     [ApiController]
-    public class SchoolController
+    public class SchoolController : Controller
     {
-        School school = new School(1); //          placeholder
+        private School _school;
+
+        public SchoolController(IRepository<School> repository)
+        {
+            _school = repository.GetSchool();
+        }
 
         [Route("/class/{studentClass}/get-room")]
         [HttpGet]
         public int GetClassRoom(string studentClass)
         {
-            return school.GetStudentClass(studentClass).classRoom;
+            return _school.GetStudentClass(studentClass).classRoom;
         }
 
         [Route("/class/{studentClass}/change-room")]
         [HttpPost]
         public void ChangeClassRoom(string studentClass, [FromBody] Dictionary<string, string> postBody)
         {
-            school.GetStudentClass(studentClass).classRoom = Int32.Parse(postBody["roomNumber"]);
+            _school.GetStudentClass(studentClass).classRoom = Int32.Parse(postBody["roomNumber"]);
         }
 
         [Route("/get-class/{classname}")]
@@ -34,15 +40,15 @@ namespace ChalkCode.Controllers
         public StudentClass GetSpecificStudentClass(string classname)
         {
             Console.WriteLine(classname);
-            school.addNewClasses(3);
+            _school.AddNewClasses(3);
             Student student = new Student("asd asd", DateTime.Now, "9A");
-            foreach (var studentClass in school.classesInTheSchool)
+            foreach (var studentClass in _school.GetStudentClasses())
             {
                 studentClass.addStudent(student);
             }
             //for testing ^^^
 
-            foreach (var studentClass in school.classesInTheSchool)
+            foreach (var studentClass in _school.GetStudentClasses())
             {
                 if (studentClass.getClassName() == classname)
                 {
@@ -65,7 +71,7 @@ namespace ChalkCode.Controllers
         public void AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
         {
             Student student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]), className);
-            school.GetStudentClass(className).addStudent(student);
+            _school.GetStudentClass(className).addStudent(student);
         }
 
         /*
@@ -80,9 +86,9 @@ namespace ChalkCode.Controllers
         [HttpPost]
         public void ChangeClassOfStudent([FromBody] Dictionary<string, string> postBody)
         {
-            StudentClass oldClass = school.GetStudentClass(postBody["oldClassId"]);
+            StudentClass oldClass = _school.GetStudentClass(postBody["oldClassId"]);
             Student student = oldClass.GetStudent(postBody["studentId"]);
-            school.GetStudentClass(postBody["newClassId"]).addStudent(student);
+            _school.GetStudentClass(postBody["newClassId"]).addStudent(student);
             oldClass.removeStudent(student);
         }
 
@@ -92,16 +98,16 @@ namespace ChalkCode.Controllers
          */
         [Route("/add-new-classes")]
         [HttpPost]
-        public void AddNewClasses([FromBody] Dictionary<string, string> postBody)
+        public void AddNewClasses([FromBody] Dictionary<string, int> postBody)
         {
-            school.addNewClasses(Int32.Parse(postBody["numberOfClasses"]));
+            _school.AddNewClasses(postBody["numberOfClasses"]);
         }
 
         [Route("/end-of-year")]
         [HttpPost]
         public void EndOfYear()
         {
-            school.endOfYear();
+            _school.EndOfYear();
         }
 
         /*
@@ -135,7 +141,7 @@ namespace ChalkCode.Controllers
 
         private Student FindStudent(string studentId)
         {
-            foreach (var studentClass in school.classesInTheSchool)
+            foreach (var studentClass in _school.GetStudentClasses())
             {
                 foreach (var student in studentClass.Students)
                 {
@@ -148,16 +154,14 @@ namespace ChalkCode.Controllers
 
             return null;
         }
-
-        /* unfinished code, might be useful
-         
-        [Route("/every-class")]
+        
+        [Route("/list-classes")]
         [HttpGet]
-        public HashSet<StudentClass> GetClasses(School school)
+        public List<StudentClass> GetClasses()
         {
-            return school.classesInTheSchool;
+            return _school.GetStudentClasses();
         }
-
+/*
         [Route("/classes")]
         [HttpPost]
         public void AddClasses([FromBody] JsonContent body)
