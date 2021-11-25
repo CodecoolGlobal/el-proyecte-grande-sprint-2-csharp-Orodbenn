@@ -17,6 +17,7 @@ namespace Core
             },
             new Teacher()
             {
+                Id = new Guid("00000000-0000-0000-0000-000000000001"),
                 name = "NOT Bob",
                 homeworks =             {
                new Homework()

@@ -9,11 +9,13 @@ using Core;
 using Core.Utils;
 using Core.Marks;
 using Core.DAL;
+using System.Web.Http.Cors;
 
 namespace ChalkCode.Controllers
 {
     
     [ApiController]
+    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class TeacherController : ControllerBase
     {
         Util util = new Util();
