@@ -1,8 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChalkCode", "ChalkCode\ChalkCode.csproj", "{FE01A750-B876-46DC-8C0D-45E564F723D9}"
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31729.503
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ChalkCode", "ChalkCode\ChalkCode.csproj", "{FE01A750-B876-46DC-8C0D-45E564F723D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", "{842E5FED-8197-47E0-964C-73ED8AD4D63E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Core", "Core\Core.csproj", "{842E5FED-8197-47E0-964C-73ED8AD4D63E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Database", "Database\Database.csproj", "{DBD4D9EF-49FF-41EF-BAEC-E9228D644D3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -18,5 +23,15 @@ Global
 		{842E5FED-8197-47E0-964C-73ED8AD4D63E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{842E5FED-8197-47E0-964C-73ED8AD4D63E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{842E5FED-8197-47E0-964C-73ED8AD4D63E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DBD4D9EF-49FF-41EF-BAEC-E9228D644D3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DBD4D9EF-49FF-41EF-BAEC-E9228D644D3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DBD4D9EF-49FF-41EF-BAEC-E9228D644D3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DBD4D9EF-49FF-41EF-BAEC-E9228D644D3F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {11E7F8BF-FD01-4779-BFE2-6611CE15179C}
 	EndGlobalSection
 EndGlobal
