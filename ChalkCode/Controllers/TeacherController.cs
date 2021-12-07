@@ -10,34 +10,43 @@ using Core.Utils;
 using Core.Marks;
 using Core.DAL;
 using System.Web.Http.Cors;
+using Database;
 
 namespace ChalkCode.Controllers
 {
     
     [ApiController]
+    [Route("school/teacher")]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class TeacherController : ControllerBase
     {
         Util util = new Util();
-        private School _school;
+        private readonly SchoolContext _schoolContext;
 
-        public TeacherController(IRepository<School> repository)
+        public TeacherController(SchoolContext context)
         {
-            _school = repository.GetSchool();
+            _schoolContext = context;
         }
-        [Route("school/teacher")]
+        
         [HttpGet]
-        public ActionResult getTeachers()
+        public async Task<List<Teacher>> getTeachers()
         {
-            return Ok(_school.GetTeachers());
+            var Teachers = await _schoolContext.GetAllTeachers();
+            return Teachers;
+        }
+        [HttpPost]
+        public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
+        {
+            await _schoolContext.AddTeacher(teacher);
+            return Ok();
         }
 
+        
         [Route("school/teacher/{id}")]
         [HttpGet]
-        public ActionResult getTeacher(string id)
+        public async Task<ActionResult> getTeacher(int id)
         {
-            var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.ID.ToString() == id);
+            var teachers = await _schoolContext.GetTeacherById(id);
             if (teachers == null)
             {
                 return NotFound();
@@ -45,7 +54,7 @@ namespace ChalkCode.Controllers
             return Ok(teachers);
 
         }
-
+        /*
         [Route("school/teacher/{id}/showhomework")]
         [HttpGet]
         public ActionResult getHomeworks(string id)
@@ -77,7 +86,8 @@ namespace ChalkCode.Controllers
             teachers.AddHomeWork(freshHomework);
             return NoContent();
         }
-       
+        */
+
 
     }
 }
