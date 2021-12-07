@@ -16,7 +16,6 @@ namespace ChalkCode.Controllers
 {
     
     [ApiController]
-    [Route("school/teacher")]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class TeacherController : ControllerBase
     {
@@ -27,13 +26,14 @@ namespace ChalkCode.Controllers
         {
             _schoolContext = context;
         }
-        
+        [Route("school/teacher")]
         [HttpGet]
         public async Task<List<Teacher>> getTeachers()
         {
             var Teachers = await _schoolContext.GetAllTeachers();
             return Teachers;
         }
+        [Route("school/addteacher")]
         [HttpPost]
         public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
         {
@@ -54,39 +54,23 @@ namespace ChalkCode.Controllers
             return Ok(teachers);
 
         }
-        /*
+        
         [Route("school/teacher/{id}/showhomework")]
         [HttpGet]
-        public ActionResult getHomeworks(string id)
+        public async Task<List<Homework>> getHomeworks(int id)
         {
-            var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.ID.ToString() == id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
-            var homewokrs = teachers.GetHomeworks();
-            return Ok(homewokrs);
+            var homeworks = await _schoolContext.GetHomeworkForTeacher(id);
+            return homeworks;
         }
-
+        
        [Route ("school/teacher/{id}/addhomework")]
-        public ActionResult addHomework(string id,[FromBody] Dictionary<string,string> homework)
+       [HttpPost]
+        public async Task<ActionResult> addHomework(int id,[FromBody] Homework homework)
         {
-            var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.ID.ToString() == id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
-            Homework freshHomework = new Homework()
-            {
-                Subject = util.checkSubject(homework["Subject"]),
-                description = homework["Description"]
-            };
-            teachers.AddHomeWork(freshHomework);
-            return NoContent();
+            await _schoolContext.AddHomework(homework, id);
+            return Ok();
         }
-        */
+        
 
 
     }
