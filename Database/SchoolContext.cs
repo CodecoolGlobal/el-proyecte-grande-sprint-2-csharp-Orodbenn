@@ -46,7 +46,19 @@ namespace Database
             return result;
         }
 
-        
+        public async Task<List<Homework>> GetHomeworkForTeacher(long id)
+        {
+            var Teacher = await Teachers.FindAsync(id);
+            var List = Teacher.GetHomeworks();
+            return List;
+        }
+
+        public async Task AddHomework(Homework homework, long id)
+        {
+           this.Homework.Add(homework);
+           // Teachers.Find(id).AddHomeWork(homework);
+            await SaveChangesAsync();
+        }
         /*
         public DbSet<Student> Students { get; set; }
         public DbSet<Room> Rooms { get; set; }
