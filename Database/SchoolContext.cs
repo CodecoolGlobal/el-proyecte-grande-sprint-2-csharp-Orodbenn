@@ -27,6 +27,26 @@ namespace Database
         {
         }
 
+        public async Task<List<Teacher>> GetAllTeachers()
+        {
+            var TeacherList = await Task.Run(() => Teachers.ToList<Teacher>());
+            return TeacherList;
+        }
+
+        public async Task AddTeacher(Teacher teacher)
+        {
+            Teachers.Add(teacher);
+            await SaveChangesAsync();
+
+        }
+
+        public async Task<Teacher> GetTeacherById(long id)
+        {
+            var result = await Teachers.FindAsync(id);
+            return result;
+        }
+
+        
         /*
         public DbSet<Student> Students { get; set; }
         public DbSet<Room> Rooms { get; set; }
