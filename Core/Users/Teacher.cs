@@ -47,7 +47,7 @@ namespace Core.Users
         }
         public void AddExam(StudentClass classForExam, Subject subject, DateTime timeOfExam)
         {
-            classForExam.Students.ForEach(student => student.AddExam(subject, timeOfExam));
+            //classForExam.Students.ForEach(student => student.AddExam(subject, timeOfExam));
         }
 
         public void GiveMark(Mark mark, Student student)

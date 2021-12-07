@@ -12,20 +12,22 @@ namespace Core
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
+
         public int grade { get; set; }
         public string classIdentifier { get; } // 9a vs 9b and so on
-        private List<Student> students = new List<Student>();
-        private List<Teacher> teachersOfTheClass = new List<Teacher>();
         public int classRoom { get; set; } // can be changed if letters are involved as well
+
+        public List<Student> Students { get; } = new List<Student>();
+        private List<Teacher> teachersOfTheClass = new List<Teacher>();
 
         public StudentClass(string classIdentifier)
         {
             this.classIdentifier = classIdentifier;
             grade = 9; // based on regular high schools
         }
+
         public StudentClass()
         {
-
         }
 
         public void yearPassing()
@@ -35,7 +37,7 @@ namespace Core
 
         public Student GetStudent(string studentId)
         {
-            foreach (var student in students)
+            foreach (var student in Students)
             {
                 if (student.PersonalId == studentId)
                 {
@@ -48,12 +50,12 @@ namespace Core
 
         public void addStudent(Student student)
         {
-            students.Add(student);
+            Students.Add(student);
         }
 
         public void removeStudent(Student studentToRemove)
         {
-            students.Remove(studentToRemove);
+            Students.Remove(studentToRemove);
         }
 
         public void addTeacher(Teacher teacher)
@@ -66,7 +68,6 @@ namespace Core
             teachersOfTheClass.Remove(teacherToRemove);
         }
 
-        public List<Student> Students => students;
 
         public List<Teacher> TeachersOfTheClass => teachersOfTheClass;
 
