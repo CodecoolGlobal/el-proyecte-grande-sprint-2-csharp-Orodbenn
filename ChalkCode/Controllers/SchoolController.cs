@@ -15,9 +15,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChalkCode.Controllers
 {
     [ApiController, Route("/class")]
-    public class SchoolController : Controller
+    public class SchoolController : ControllerBase
     {
-        private SchoolContext _context;
+        private readonly SchoolContext _context;
 
         public SchoolController(SchoolContext context)
         {
@@ -26,16 +26,16 @@ namespace ChalkCode.Controllers
 
         [Route("list-classes")]
         [HttpGet]
-        public List<StudentClass> GetClasses()
+        public async Task<List<StudentClass>> GetClasses()
         {
-            return _context.GetStudentClasses().Result;
-        }
+            return await Task<List<StudentClass>>.Run(() => _context.GetStudentClasses().Result);
+        }        
 
         [Route("{studentClass}/room")]
         [HttpGet]
-        public int GetClassRoom(string studentClass)
+        public async Task<int> GetClassRoom(string studentClass)
         {
-            return _context.GetStudentClass(studentClass).Result.classRoom;
+            return await Task<int>.Run(() => _context.GetStudentClass(studentClass).Result.classRoom);
         }
 
         /*
@@ -46,16 +46,16 @@ namespace ChalkCode.Controllers
          */
         [Route("{studentClass}/room")]
         [HttpPut]
-        public void ChangeClassRoom(string studentClass, [FromBody] Dictionary<string, int> postBody)
+        public async Task ChangeClassRoom(string studentClass, [FromBody] Dictionary<string, int> postBody)
         {
-            _context.ChangeClassRoom(studentClass, postBody["roomNumber"]);
+            await Task.Run(() => _context.ChangeClassRoom(studentClass, postBody["roomNumber"]));
         }
 
         [Route("{classname}")]
         [HttpGet]
-        public StudentClass GetSpecificStudentClass(string studentClass)
+        public async Task<StudentClass> GetSpecificStudentClass(string studentClass)
         {
-            return _context.GetStudentClass(studentClass).Result;
+            return await Task.Run(() => _context.GetStudentClass(studentClass).Result);
         }
 
         /*
@@ -67,10 +67,10 @@ namespace ChalkCode.Controllers
          */
         [Route("{className}/add-new-student")]
         [HttpPost]
-        public void AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
+        public async Task AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
         {
             Student student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]), className);
-            _context.AddNewStudentToClass(className, student);
+            await Task.Run(() => _context.AddNewStudentToClass(className, student));
         }
 
         /* 
@@ -79,16 +79,16 @@ namespace ChalkCode.Controllers
          */
         [Route("add-new-classes")]
         [HttpPost]
-        public async void AddNewClasses([FromBody] Dictionary<string, int> postBody)
+        public async Task AddNewClasses([FromBody] Dictionary<string, int> postBody)
         {
             await _context.AddNewClasses(postBody["numberOfClasses"]);
         }
 
         [Route("end-of-year")]
         [HttpPost]
-        public void EndOfYear()
+        public async Task EndOfYear()
         {
-            _context.EndOfYear();
+            await _context.EndOfYear();
         }
     }
 }
