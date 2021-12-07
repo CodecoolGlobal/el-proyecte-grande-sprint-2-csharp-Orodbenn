@@ -1,6 +1,7 @@
 ﻿using Core.Marks;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,7 @@ namespace Core.Users
 {
     public class Student : User
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public List<Mark> marks { get; set; }
         public HashSet<Parent> parents { get; set; }
         public Dictionary<Subject, Dictionary<DateTime, string>> homeworks { get; }
@@ -19,6 +21,10 @@ namespace Core.Users
             marks = new List<Mark>();
             parents = new HashSet<Parent>();
            // AssignId(classId);
+        }
+
+        public Student()
+        {
         }
 
         private void AssignId(string classId)

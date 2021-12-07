@@ -37,7 +37,7 @@ namespace ChalkCode.Controllers
         public ActionResult getTeacher(string id)
         {
             var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.Id.ToString() == id);
+                .FirstOrDefault(t => t.ID.ToString() == id);
             if (teachers == null)
             {
                 return NotFound();
@@ -51,7 +51,7 @@ namespace ChalkCode.Controllers
         public ActionResult getHomeworks(string id)
         {
             var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.Id.ToString() == id);
+                .FirstOrDefault(t => t.ID.ToString() == id);
             if (teachers == null)
             {
                 return NotFound();
@@ -64,7 +64,7 @@ namespace ChalkCode.Controllers
         public ActionResult addHomework(string id,[FromBody] Dictionary<string,string> homework)
         {
             var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.Id.ToString() == id);
+                .FirstOrDefault(t => t.ID.ToString() == id);
             if (teachers == null)
             {
                 return NotFound();

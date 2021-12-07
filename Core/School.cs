@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using Core.Users;
 
@@ -7,36 +8,42 @@ namespace Core
 {
     public class School
     {
-        private Guid SchoolId = Guid.NewGuid();
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long ID { get; set; }
+
         public List<Teacher> _teachersOfTheSchool = new List<Teacher>()
         {
             new Teacher()
             {
                 name = "Bob",
-
             },
             new Teacher()
             {
-                Id = new Guid("00000000-0000-0000-0000-000000000001"),
+                ID = 1,
                 name = "NOT Bob",
-                homeworks =             {
-               new Homework()
-               {
-                   studentClass = null,
-                   Subject = Subject.Literature,
-                   description = "Do literature"
-               },
-               new Homework()
-               {
-                   studentClass = null,
-                   Subject = Subject.Summoning,
-                   description = "Summon Archimonde, survive for 30 min"
-               }
+                homeworks =
+                {
+                    new Homework()
+                    {
+                        studentClass = null,
+                        Subject = Subject.Literature,
+                        description = "Do literature"
+                    },
+                    new Homework()
+                    {
+                        studentClass = null,
+                        Subject = Subject.Summoning,
+                        description = "Summon Archimonde, survive for 30 min"
+                    }
+                }
             }
-    }
         };
-        
+
         public List<StudentClass> _classesInTheSchool = new List<StudentClass>();
+
+        public School()
+        {
+        }
 
         public StudentClass GetStudentClass(string classId)
         {
@@ -66,11 +73,15 @@ namespace Core
         public void EndOfYear()
         {
             if (_classesInTheSchool.Count <= 0) return; //TODO convert to exception
-            foreach (var studentClass in _classesInTheSchool.Where(studentClass => studentClass.grade >= 12))
+            foreach (var studentClass in _classesInTheSchool)
             {
-                _classesInTheSchool.Remove(studentClass);
+                if (studentClass.grade >= 12)
+                {
+                    _classesInTheSchool.Remove(studentClass);
+                }
+
+                studentClass.grade += 1;
             }
-            _classesInTheSchool.GetEnumerator().Current.yearPassing();
         }
 
         public void AddNewClasses(int numberOfNewClasses)

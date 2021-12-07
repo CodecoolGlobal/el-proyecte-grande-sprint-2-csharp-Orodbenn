@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,6 +10,8 @@ namespace Core
 {
     public class StudentClass
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long ID { get; set; }
         public int grade { get; set; }
         public string classIdentifier { get; } // 9a vs 9b and so on
         private List<Student> students = new List<Student>();

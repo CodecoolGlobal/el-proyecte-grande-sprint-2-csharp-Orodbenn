@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -9,22 +10,16 @@ namespace Core.Users
 {
     public class Teacher : User
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public List<Subject> subjects = new List<Subject>();
         public List<Homework> homeworks { get; set; }
         public Teacher(string name) : base(name)
         {
             homeworks = new List<Homework>();
-            
-
-            Id = Guid.NewGuid();
         }
 
         public Teacher()
         {
-            Id = Guid.NewGuid();
-            homeworks = new List<Homework>();
-            
-
         }
 
         public void addSubject(Subject subjectToAdd)
