@@ -12,23 +12,23 @@ namespace Core.Marks
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
-        public int mark { get; set; }
-        public Teacher assigningTeacher { get; set; }
-        public Subject subject { get; set; }
-        public DateTime dateOfAssignment { get; set; }
-        public MarkWeight weight { get; set; }
+        public int MarkValue { get; set; }
+        public Teacher AssigningTeacher { get; set; }
+        public Subject Subject { get; set; }
+        public DateTime DateOfAssignment { get; set; }
+        public MarkWeight Weight { get; set; }
+
+        public Mark(int markValue, Teacher assigningTeacher, Subject subject, MarkWeight weight)
+        {
+            this.MarkValue = markValue;
+            this.AssigningTeacher = assigningTeacher;
+            this.Subject = subject;
+            this.Weight = weight;
+            DateOfAssignment = DateTime.Now;
+        }
 
         public Mark()
         {
-        }
-
-        public Mark(int mark, Teacher assigningTeacher, Subject subject, MarkWeight weight)
-        {
-            this.mark = mark;
-            this.assigningTeacher = assigningTeacher;
-            this.subject = subject;
-            this.weight = weight;
-            dateOfAssignment = DateTime.Now;
         }
     }
 }

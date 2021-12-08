@@ -12,15 +12,10 @@ namespace Core.Users
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public List<Subject> subjects = new List<Subject>();
-        public List<Homework> homeworks { get; set; }
+
+        public List<Homework> homeworks { get; set; } = new List<Homework>();
         public Teacher(string name) : base(name)
         {
-            homeworks = new List<Homework>();
-        }
-
-        public Teacher()
-        {
-            homeworks = new List<Homework>();
         }
 
         public void addSubject(Subject subjectToAdd)
@@ -32,11 +27,11 @@ namespace Core.Users
             subjects.Remove(subjectToRemove);
         }
 
-        /*private void AssignId()
+        public void AssignId()
         {
             PersonalId = "T" + name.Substring(0, 1).ToUpper() +
                          name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
-        }*/
+        }
 
         public void AddHomeWork(Homework homework)
         {
@@ -48,7 +43,7 @@ namespace Core.Users
         }
         public void AddExam(StudentClass classForExam, Subject subject, DateTime timeOfExam)
         {
-            //classForExam.Students.ForEach(student => student.AddExam(subject, timeOfExam));
+            //classForExam.Students.ForEach(student => student.AddExam(Subject, timeOfExam));
         }
 
         public void GiveMark(Mark mark, Student student)

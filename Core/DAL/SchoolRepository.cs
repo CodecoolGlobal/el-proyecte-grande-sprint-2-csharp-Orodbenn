@@ -1,4 +1,4 @@
-namespace Core.DAL
+/*namespace Core.DAL
 {
     public class SchoolRepository : IRepository<School>
     {
@@ -14,4 +14,4 @@ namespace Core.DAL
             return _school;
         }
     }
-}
+}*/

@@ -8,7 +8,7 @@ using Core.Users;
 using Core;
 using Core.Utils;
 using Core.Marks;
-using Core.DAL;
+//using Core.DAL;
 using System.Web.Http.Cors;
 using Database;
 
@@ -17,6 +17,7 @@ namespace ChalkCode.Controllers
     
     [ApiController]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
+    [Route("school")]
     public class TeacherController : ControllerBase
     {
         Util util = new Util();
@@ -26,14 +27,14 @@ namespace ChalkCode.Controllers
         {
             _schoolContext = context;
         }
-        [Route("school/teacher")]
+        [Route("")]
         [HttpGet]
         public async Task<List<Teacher>> getTeachers()
         {
             var Teachers = await _schoolContext.GetAllTeachers();
             return Teachers;
         }
-        [Route("school/addteacher")]
+        [Route("addteacher")]
         [HttpPost]
         public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
         {
@@ -42,9 +43,9 @@ namespace ChalkCode.Controllers
         }
 
         
-        [Route("school/teacher/{id}")]
+        [Route("{id}")]
         [HttpGet]
-        public async Task<ActionResult> getTeacher(int id)
+        public async Task<ActionResult> getTeacher(string id)
         {
             var teachers = await _schoolContext.GetTeacherById(id);
             if (teachers == null)
@@ -55,23 +56,36 @@ namespace ChalkCode.Controllers
 
         }
         
-        [Route("school/teacher/{id}/showhomework")]
+        [Route("{id}/showhomework")]
         [HttpGet]
-        public async Task<List<Homework>> getHomeworks(int id)
+        public async Task<List<Homework>> getHomeworks(string id)
         {
             var homeworks = await _schoolContext.GetHomeworkForTeacher(id);
             return homeworks;
         }
         
-       [Route ("school/teacher/{id}/addhomework")]
+       [Route ("{id}/addhomework")]
        [HttpPost]
-        public async Task<ActionResult> addHomework(int id,[FromBody] Homework homework)
+        public async Task<ActionResult> addHomework(string id,[FromBody] Homework homework)
         {
             await _schoolContext.AddHomework(homework, id);
             return Ok();
         }
-        
 
-
+        /*
+         * needs:
+         * {
+         *    "studentId": {string},
+         *    "teacherId": {string},
+         *    "value": {string},
+         *    "subject": {string},
+         *    "weight": {string}
+         */
+        [Route("give-mark")]
+        [HttpPost]
+        public async Task AddMark([FromBody] Dictionary<string, string> formData)
+        {
+            await _schoolContext.AddMark(formData);
+        }
     }
 }

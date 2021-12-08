@@ -6,15 +6,17 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Threading.Tasks;
+using System.Web.Http.Cors;
 using Core;
-using Core.DAL;
+//using Core.DAL;
 using Core.Users;
 using Database;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ChalkCode.Controllers
 {
-    [ApiController, Route("/class")]
+    [ApiController]
+    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     public class SchoolController : Controller
     {
         private readonly SchoolContext _context;
@@ -53,24 +55,45 @@ namespace ChalkCode.Controllers
 
         [Route("{classname}")]
         [HttpGet]
-        public async Task<StudentClass> GetSpecificStudentClass(string studentClass)
+        public async Task<StudentClass> GetSpecificStudentClass(string classname)
         {
-            return await Task.Run(() => _context.GetStudentClass(studentClass).Result);
+            return await Task.Run(() => _context.GetStudentClass(classname).Result);
+        }
+
+        [Route("{classname}/students")]
+        [HttpGet]
+        public async Task<List<Student>> GetAllStudentsOfClass(string classname)
+        {
+            return await Task.Run(() => _context.GetStudentClass(classname).Result.Students);
+        }
+
+        [Route("{classname}/teachers")]
+        [HttpGet]
+        public async Task<List<Teacher>> GetAllTeacherssOfClass(string classname)
+        {
+            return await Task.Run(() => _context.GetStudentClass(classname).Result.TeachersOfTheClass);
         }
 
         /*
          * needs:
          * {
          *    "name": {string},
-         *    "birthDate": {Date}
+         *    "birthDate": {string}
          * }
          */
         [Route("{className}/add-new-student")]
         [HttpPost]
         public async Task AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
         {
-            Student student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]));
+            var student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]));
             await _context.AddNewStudentToClass(className, student);
+        }
+
+        [Route("delete-user")]
+        [HttpDelete]
+        public async Task DeleteUser(string userId)
+        {
+            await _context.DeleteUser(userId);
         }
 
         /* 

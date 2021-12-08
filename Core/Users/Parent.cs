@@ -10,12 +10,12 @@ namespace Core.Users
     public class Parent : User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public HashSet<Student> students = new HashSet<Student>();
+        public HashSet<Student> Students { get; set; } = new HashSet<Student>();
 
         public Parent(string name, Student student) : base(name)
         {
-            students.Add(student);
             student.parents.Add(this);
+            Students.Add(student);
             AssignId(student);
         }
         
@@ -23,7 +23,7 @@ namespace Core.Users
         {
         }
 
-        private void AssignId(Student student)
+        public void AssignId(Student student)
         {
             string id = student.PersonalId;
             id = id.Substring(0, 1).Replace("S", "P");

@@ -13,7 +13,7 @@ namespace Core.Users
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public List<Mark> marks { get; set; } = new List<Mark>();
         public HashSet<Parent> parents { get; set; } = new HashSet<Parent>();
-        public Dictionary<Subject, Dictionary<DateTime, string>> homeworks { get; }
+        //public Homework homeworks { get; }
         public Dictionary<Subject, DateTime> exams;
 
         public Student(string name, DateTime dateOfBirth) : base(name, dateOfBirth)
@@ -33,11 +33,6 @@ namespace Core.Users
         public void AddParent(Parent parent)
         {
             parents.Add(parent);
-        }
-
-        public void AddHomeWork(Subject subject, Dictionary<DateTime, string> homework)
-        {
-            homeworks.Add(subject, homework);
         }
 
         public void AddExam(Subject subject, DateTime date)
