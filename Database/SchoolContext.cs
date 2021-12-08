@@ -281,6 +281,39 @@ namespace Database
             await SaveChangesAsync();
         }
 
+        public async Task UpdateHomework(Dictionary<string, string> data)
+        {
+            var homework = Homework.FindAsync(data["homeworkId"]).Result;
+            homework.description = data["desc"];
+            Homework.Update(homework);
+            await SaveChangesAsync();
+        }
+
+        public async Task SaveEmailTeacher(string teacherId, Dictionary<string, string> address)
+        {
+            Teacher teacher = Teachers.FindAsync(teacherId).Result;
+            teacher.Email = address["email"];
+            Teachers.Update(teacher);
+            await SaveChangesAsync();
+        }
+
+        public async Task SavePhoneNumberTeacher(string teacherId, Dictionary<string, string> number)
+        {
+            Teacher teacher = Teachers.FindAsync(teacherId).Result;
+            teacher.Email = number["phone"];
+            Teachers.Update(teacher);
+            await SaveChangesAsync();
+        }
+
+        public async Task UpdateTeacher(string teacherId, Dictionary<string, string> data)
+        {
+            var teacher = Teachers.FindAsync(teacherId).Result;
+            teacher.name = data["name"];
+            teacher.DateOfBirth = DateTime.Parse(data["birthDate"]);
+            Teachers.Update(teacher);
+            await SaveChangesAsync();
+        }
+
         /*
         public DbSet<Student> Students { get; set; }
         public DbSet<Room> Rooms { get; set; }

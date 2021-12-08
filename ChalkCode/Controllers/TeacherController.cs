@@ -14,7 +14,6 @@ using Database;
 
 namespace ChalkCode.Controllers
 {
-    
     [ApiController]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     [Route("school")]
@@ -27,6 +26,7 @@ namespace ChalkCode.Controllers
         {
             _schoolContext = context;
         }
+
         [Route("")]
         [HttpGet]
         public async Task<List<Teacher>> getTeachers()
@@ -34,6 +34,7 @@ namespace ChalkCode.Controllers
             var Teachers = await _schoolContext.GetAllTeachers();
             return Teachers;
         }
+
         [Route("addteacher")]
         [HttpPost]
         public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
@@ -42,7 +43,6 @@ namespace ChalkCode.Controllers
             return Ok();
         }
 
-        
         [Route("{id}")]
         [HttpGet]
         public async Task<ActionResult> getTeacher(string id)
@@ -52,10 +52,53 @@ namespace ChalkCode.Controllers
             {
                 return NotFound();
             }
-            return Ok(teachers);
 
+            return Ok(teachers);
         }
-        
+
+        /*
+         * needs:
+         * {
+         *    "phone": {string},
+         *    "email": {string}
+         * }
+         */
+        [Route("{teacherId}/add-contact")]
+        [HttpPost]
+        public async Task AddContacts(string teacherId, [FromBody] Dictionary<string, string> postBody)
+        {
+            if (postBody.Count == 1)
+            {
+                if (postBody.ContainsKey("email"))
+                {
+                    await _schoolContext.SaveEmailTeacher(teacherId, postBody);
+                }
+                else
+                {
+                    await _schoolContext.SavePhoneNumberTeacher(teacherId, postBody);
+                }
+            }
+            else
+            {
+                await _schoolContext.SaveEmailTeacher(teacherId, postBody);
+                await _schoolContext.SavePhoneNumberTeacher(teacherId, postBody);
+            }
+        }
+
+        /*
+         * needs:
+         * {
+         *    "name": {string},
+         *    "birthDate": {string}
+         * }
+         */
+        [Route("{teacherId}")]
+        [HttpPut]
+        public async Task ChangeInfo(string teacherId, [FromBody] Dictionary<string, string> postBody)
+        {
+            await _schoolContext.UpdateTeacher(teacherId, postBody);
+        }
+
         [Route("{id}/showhomework")]
         [HttpGet]
         public async Task<List<Homework>> getHomeworks(string id)
@@ -63,10 +106,10 @@ namespace ChalkCode.Controllers
             var homeworks = await _schoolContext.GetHomeworkForTeacher(id);
             return homeworks;
         }
-        
-       [Route ("{id}/addhomework")]
-       [HttpPost]
-        public async Task<ActionResult> addHomework(string id,[FromBody] Homework homework)
+
+        [Route("{id}/addhomework")]
+        [HttpPost]
+        public async Task<ActionResult> addHomework(string id, [FromBody] Homework homework)
         {
             await _schoolContext.AddHomework(homework, id);
             return Ok();
@@ -86,6 +129,19 @@ namespace ChalkCode.Controllers
         public async Task AddMark([FromBody] Dictionary<string, string> formData)
         {
             await _schoolContext.AddMark(formData);
+        }
+
+        /*
+         * needs:
+         * {
+         *    "homeworkId": {string},
+         *    "desc": {string}
+         */
+        [Route("update-homework")]
+        [HttpPut]
+        public async Task UpdateHomework([FromBody] Dictionary<string, string> formBody)
+        {
+            await _schoolContext.UpdateHomework(formBody);
         }
     }
 }
