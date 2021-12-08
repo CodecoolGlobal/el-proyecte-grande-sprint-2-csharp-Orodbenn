@@ -18,10 +18,14 @@ namespace Core
         public Subject Subject { get; set; }
         public string description { get; set; }
         DateTime date { get; set; }
+        public Teacher teacher { get; set; }
 
-        public Homework(StudentClass studentClass, Subject subject, String desc)
+        
+
+        public Homework(StudentClass studentClass, Subject subject, String desc, Teacher teacher)
         {
             this.studentClass = studentClass;
+            this.teacher = teacher;
             Subject = subject;
             date = DateTime.Now;
             description = desc;

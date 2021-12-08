@@ -10,6 +10,7 @@ using Core.Utils;
 using Core.Marks;
 using Core.DAL;
 using System.Web.Http.Cors;
+using Database;
 
 namespace ChalkCode.Controllers
 {
@@ -19,25 +20,33 @@ namespace ChalkCode.Controllers
     public class TeacherController : ControllerBase
     {
         Util util = new Util();
-        private School _school;
+        private readonly SchoolContext _schoolContext;
 
-        public TeacherController(IRepository<School> repository)
+        public TeacherController(SchoolContext context)
         {
-            _school = repository.GetSchool();
+            _schoolContext = context;
         }
         [Route("school/teacher")]
         [HttpGet]
-        public ActionResult getTeachers()
+        public async Task<List<Teacher>> getTeachers()
         {
-            return Ok(_school.GetTeachers());
+            var Teachers = await _schoolContext.GetAllTeachers();
+            return Teachers;
+        }
+        [Route("school/addteacher")]
+        [HttpPost]
+        public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
+        {
+            await _schoolContext.AddTeacher(teacher);
+            return Ok();
         }
 
+        
         [Route("school/teacher/{id}")]
         [HttpGet]
-        public ActionResult getTeacher(string id)
+        public async Task<ActionResult> getTeacher(int id)
         {
-            var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.ID.ToString() == id);
+            var teachers = await _schoolContext.GetTeacherById(id);
             if (teachers == null)
             {
                 return NotFound();
@@ -45,39 +54,24 @@ namespace ChalkCode.Controllers
             return Ok(teachers);
 
         }
-
+        
         [Route("school/teacher/{id}/showhomework")]
         [HttpGet]
-        public ActionResult getHomeworks(string id)
+        public async Task<List<Homework>> getHomeworks(int id)
         {
-            var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.ID.ToString() == id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
-            var homewokrs = teachers.GetHomeworks();
-            return Ok(homewokrs);
+            var homeworks = await _schoolContext.GetHomeworkForTeacher(id);
+            return homeworks;
         }
-
+        
        [Route ("school/teacher/{id}/addhomework")]
-        public ActionResult addHomework(string id,[FromBody] Dictionary<string,string> homework)
+       [HttpPost]
+        public async Task<ActionResult> addHomework(int id,[FromBody] Homework homework)
         {
-            var teachers = _school.GetTeachers()
-                .FirstOrDefault(t => t.ID.ToString() == id);
-            if (teachers == null)
-            {
-                return NotFound();
-            }
-            Homework freshHomework = new Homework()
-            {
-                Subject = util.checkSubject(homework["Subject"]),
-                description = homework["Description"]
-            };
-            teachers.AddHomeWork(freshHomework);
-            return NoContent();
+            await _schoolContext.AddHomework(homework, id);
+            return Ok();
         }
-       
+        
+
 
     }
 }

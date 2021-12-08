@@ -145,6 +145,41 @@ namespace Database
 
             return await StudentClasses.FindAsync(classId);
         }
+        
+        /* methods for TeacherController */
+
+        public async Task<List<Teacher>> GetAllTeachers()
+        {
+            var TeacherList = await Task.Run(() => Teachers.ToList<Teacher>());
+            return TeacherList;
+        }
+
+        public async Task AddTeacher(Teacher teacher)
+        {
+            Teachers.Add(teacher);
+            await SaveChangesAsync();
+
+        }
+
+        public async Task<Teacher> GetTeacherById(long id)
+        {
+            var result = await Teachers.FindAsync(id);
+            return result;
+        }
+
+        public async Task<List<Homework>> GetHomeworkForTeacher(long id)
+        {
+            var Teacher = await Teachers.FindAsync(id);
+            var List = Teacher.GetHomeworks();
+            return List;
+        }
+
+        public async Task AddHomework(Homework homework, long id)
+        {
+            this.Homework.Add(homework);
+            // Teachers.Find(id).AddHomeWork(homework);
+            await SaveChangesAsync();
+        }
 
         /*
         public DbSet<Student> Students { get; set; }

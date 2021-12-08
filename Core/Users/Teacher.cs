@@ -20,6 +20,7 @@ namespace Core.Users
 
         public Teacher()
         {
+            homeworks = new List<Homework>();
         }
 
         public void addSubject(Subject subjectToAdd)
