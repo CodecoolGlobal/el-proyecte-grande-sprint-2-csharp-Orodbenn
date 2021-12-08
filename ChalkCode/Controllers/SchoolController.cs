@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
@@ -28,35 +29,24 @@ namespace ChalkCode.Controllers
             return _school.GetStudentClass(studentClass).classRoom;
         }
 
+        /*
+         * needs:
+         * {
+         *    "roomNumber": {int}
+         * }
+         */
         [Route("/class/{studentClass}/change-room")]
         [HttpPost]
-        public void ChangeClassRoom(string studentClass, [FromBody] Dictionary<string, string> postBody)
+        public void ChangeClassRoom(string studentClass, [FromBody] Dictionary<string, int> postBody)
         {
-            _school.GetStudentClass(studentClass).classRoom = Int32.Parse(postBody["roomNumber"]);
+            _school.GetStudentClass(studentClass).classRoom = postBody["roomNumber"];
         }
 
         [Route("/get-class/{classname}")]
         [HttpGet]
         public StudentClass GetSpecificStudentClass(string classname)
         {
-            Console.WriteLine(classname);
-            _school.AddNewClasses(3);
-            Student student = new Student("asd asd", DateTime.Now, "9A");
-            foreach (var studentClass in _school.GetStudentClasses())
-            {
-                studentClass.addStudent(student);
-            }
-            //for testing ^^^
-
-            foreach (var studentClass in _school.GetStudentClasses())
-            {
-                if (studentClass.getClassName() == classname)
-                {
-                    return studentClass;
-                }
-            }
-
-            return null;
+            return _school.GetStudentClasses().FirstOrDefault(studentClass => studentClass.getClassName() == classname);
         }
 
         /*
@@ -154,20 +144,12 @@ namespace ChalkCode.Controllers
 
             return null;
         }
-        
+
         [Route("/list-classes")]
         [HttpGet]
         public List<StudentClass> GetClasses()
         {
             return _school.GetStudentClasses();
         }
-/*
-        [Route("/classes")]
-        [HttpPost]
-        public void AddClasses([FromBody] JsonContent body)
-        {
-            
-            // school.addNewClasses(int, int)
-        }*/
     }
 }
