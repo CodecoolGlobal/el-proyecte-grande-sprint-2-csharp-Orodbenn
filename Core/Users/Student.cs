@@ -11,25 +11,22 @@ namespace Core.Users
     public class Student : User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public List<Mark> marks { get; set; }
-        public HashSet<Parent> parents { get; set; }
+        public List<Mark> marks { get; set; } = new List<Mark>();
+        public HashSet<Parent> parents { get; set; } = new HashSet<Parent>();
         public Dictionary<Subject, Dictionary<DateTime, string>> homeworks { get; }
         public Dictionary<Subject, DateTime> exams;
 
-        public Student(string name, DateTime dateOfBirth, string classId) : base(name, dateOfBirth)
+        public Student(string name, DateTime dateOfBirth) : base(name, dateOfBirth)
         {
-            marks = new List<Mark>();
-            parents = new HashSet<Parent>();
-           // AssignId(classId);
         }
 
         public Student()
         {
         }
 
-        private void AssignId(string classId)
+        public void AssignId(string classId)
         {
-            PersonalId = "S" + DateTime.Now.Year + classId[^1] + name.Substring(0, 1).ToUpper() + 
+            PersonalId = "S" + DateTime.Now.Year.ToString()[2..] + classId[^1].ToString().ToUpper() + name.Substring(0, 1).ToUpper() + 
                          name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
         }
 

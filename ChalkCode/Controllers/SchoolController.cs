@@ -15,7 +15,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChalkCode.Controllers
 {
     [ApiController, Route("/class")]
-    public class SchoolController : ControllerBase
+    public class SchoolController : Controller
     {
         private readonly SchoolContext _context;
 
@@ -45,10 +45,10 @@ namespace ChalkCode.Controllers
          * }
          */
         [Route("{studentClass}/room")]
-        [HttpPut]
+        [HttpPost]
         public async Task ChangeClassRoom(string studentClass, [FromBody] Dictionary<string, int> postBody)
         {
-            await Task.Run(() => _context.ChangeClassRoom(studentClass, postBody["roomNumber"]));
+            await _context.ChangeClassRoom(studentClass, postBody["roomNumber"]);
         }
 
         [Route("{classname}")]
@@ -69,8 +69,8 @@ namespace ChalkCode.Controllers
         [HttpPost]
         public async Task AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
         {
-            Student student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]), className);
-            await Task.Run(() => _context.AddNewStudentToClass(className, student));
+            Student student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]));
+            await _context.AddNewStudentToClass(className, student);
         }
 
         /* 

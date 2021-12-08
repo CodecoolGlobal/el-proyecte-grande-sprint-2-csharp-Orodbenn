@@ -31,39 +31,108 @@ namespace Database
 
         public async Task<List<StudentClass>> GetStudentClasses()
         {
-            return Task<List<StudentClass>>.Run(() => StudentClasses.ToListAsync()).Result;
+            return await StudentClasses.ToListAsync();
         }
 
-        public Task<StudentClass> GetStudentClass(string studentClass)
+        public async Task<StudentClass> GetStudentClass(string studentClass)
         {
-            return Task<StudentClass>.Run(() => FindClass(studentClass));
+            return await FindClass(studentClass);
         }
 
-        public Task ChangeClassRoom(string studentClass, int room)
+        public async Task ChangeClassRoom(string studentClass, int room)
         {
             var classForChange = FindClass(studentClass);
             classForChange.Result.classRoom = room;
-            var task = Task.Run(() =>
-            {
-                StudentClasses.Update(classForChange.Result);
-                SaveChangesAsync();
-            });
-            return task;
+            StudentClasses.Update(classForChange.Result);
+            await SaveChangesAsync();
         }
 
-        public Task AddNewStudentToClass(string studentClass, Student student)
+        public async Task AddNewStudentToClass(string studentClass, Student student)
         {
             var classForChange = FindClass(studentClass);
-            //classForChange.Result.addStudent(student);
-            var task = Task.Run(() =>
-            {
-                StudentClasses.Update(classForChange.Result);
-                SaveChangesAsync();
-            });
-            return task;
+            student.AssignId(classForChange.Result.classIdentifier);
+            classForChange.Result.addStudent(student);
+            StudentClasses.Update(classForChange.Result);
+            await SaveChangesAsync();
         }
 
-        private Task<StudentClass> FindClass(string studentClass)
+        public async Task AddNewClasses(int numberOfClasses)
+        {
+            const int asciiForA = 65;
+            for (var i = 0; i < numberOfClasses; i++)
+            {
+                var classIdentifier = Convert.ToChar(asciiForA + i).ToString().ToLower();
+                var newClass = new StudentClass(9)
+                {
+                    classIdentifier = classIdentifier
+                };
+                StudentClasses.Add(newClass);
+            }
+
+            await SaveChangesAsync();
+        }
+
+        public async Task EndOfYear()
+        {
+            foreach (var studentClass in StudentClasses)
+            {
+                if (studentClass.grade >= 12)
+                {
+                    StudentClasses.Remove(studentClass);
+                }
+
+                studentClass.grade += 1;
+                StudentClasses.Update(studentClass);
+            }
+
+            await SaveChangesAsync();
+        }
+
+        /* methods for StudentController */
+
+        public async Task<Student> GetStudent(string studentId)
+        {
+            return await FindStudent(studentId);
+        }
+
+        /*
+         * {
+         *    "oldClassId": {string},
+         *    "newClassId": {string}
+         * }
+         */
+        public async Task ChangeClassOfStudent(string studentId, Dictionary<string, string> dict)
+        {
+            var student = Students.FindAsync(studentId).Result;
+            var oldClass = FindClass(dict["oldClassId"]).Result;
+            var newClass = FindClass(dict["newClassId"]).Result;
+
+            newClass.addStudent(student);
+            oldClass.removeStudent(student);
+            await SaveChangesAsync();
+        }
+
+        public async Task AddParentOfStudent(string studentId, Dictionary<string, string> dict)
+        {
+            Student student = FindStudent(studentId).Result;
+            Parent parent = new Parent(dict["name"], student);
+            student.AddParent(parent);
+            Students.Update(student);
+            await SaveChangesAsync();
+        }
+
+        public async Task<HashSet<Parent>> GetParents(string studentId)
+        {
+            return await Task<HashSet<Parent>>.Run(() => FindStudent(studentId).Result.parents);
+        }
+
+
+        private async Task<Student> FindStudent(string studentId)
+        {
+            return await Task<Student>.Run(() => Students.FindAsync(studentId).Result);
+        }
+
+        private async Task<StudentClass> FindClass(string studentClass)
         {
             long classId = 0;
             foreach (var sClass in StudentClasses)
@@ -73,76 +142,8 @@ namespace Database
                     classId = sClass.ID;
                 }
             }
-            return Task.Run(() => StudentClasses.FindAsync(classId).Result);
-        }
 
-        public async Task AddNewClasses(int numberOfClasses)
-        {
-            const int asciiForA = 65;
-            for (var i = 0; i < numberOfClasses; i++)
-            {
-                var newClass = new StudentClass((Convert.ToChar(asciiForA + i)).ToString());
-                StudentClasses.Add(newClass);
-            }
-            await SaveChangesAsync();
-        }
-
-        public Task EndOfYear()
-        {
-            foreach (var studentClass in StudentClasses)
-            {
-                if (studentClass.grade >= 12)
-                {
-                    StudentClasses.Remove(studentClass);
-                }
-
-                studentClass.yearPassing();
-                StudentClasses.Update(studentClass);
-            }
-            return Task.Run(() => SaveChangesAsync());
-        }
-        
-        /* methods for StudentController */
-
-        public Task<Student> GetStudent(string studentId)
-        {
-            return Task<Student>.Run(() => FindStudent(studentId));
-        }
-
-        /*
-         * {
-         *    "oldClassId": {string},
-         *    "newClassId": {string}
-         * }
-         */
-        public Task ChangeClassOfStudent(string studentId, Dictionary<string, string> dict)
-        {
-            var student = Students.Find(studentId);
-            var oldClass = FindClass(dict["oldClassId"]).Result;
-            var newClass = FindClass(dict["newClassId"]).Result;
-            
-            //newClass.addStudent(student);
-            //oldClass.removeStudent(student);
-            return Task.Run(() => SaveChangesAsync());
-        }
-
-        public Task AddParentOfStudent(string studentId, Dictionary<string, string> dict)
-        {
-            Student student = FindStudent(studentId).Result;
-            Parent parent = new Parent(dict["name"], student);
-            student.AddParent(parent);
-            return Task.Run(() => Students.Update(student));
-        }
-
-        public Task<HashSet<Parent>> GetParents(string studentId)
-        {
-            return Task<HashSet<Parent>>.Run(() => FindStudent(studentId).Result.parents);
-        }
-
-
-        private Task<Student> FindStudent(string studentId)
-        {
-            return Task<Student>.Run(() => Students.Find(studentId));
+            return await StudentClasses.FindAsync(classId);
         }
 
         /*

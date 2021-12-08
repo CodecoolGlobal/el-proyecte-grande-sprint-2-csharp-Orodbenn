@@ -12,12 +12,11 @@ namespace Core.Marks
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
-        private int mark { get; set; }
-
-        private Teacher assigningTeacher { get; set; }
-        private Subject subject { get; set; }
-        private DateTime dateOfAssignment { get; set; }
-        private MarkWeight weight { get; set; }
+        public int mark { get; set; }
+        public Teacher assigningTeacher { get; set; }
+        public Subject subject { get; set; }
+        public DateTime dateOfAssignment { get; set; }
+        public MarkWeight weight { get; set; }
 
         public Mark()
         {

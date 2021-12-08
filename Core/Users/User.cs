@@ -12,9 +12,7 @@ namespace Core.Users
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         public string name { get; set; }
-
-
-        private DateTime DateOfBirth { get; }
+        public DateTime DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
         public string Email { get; set; }
         public string PersonalId { get; set; }
