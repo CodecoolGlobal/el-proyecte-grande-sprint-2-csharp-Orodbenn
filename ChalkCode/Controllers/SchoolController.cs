@@ -67,12 +67,12 @@ namespace ChalkCode.Controllers
             return await Task.Run(() => _context.GetStudentClass(classname).Result.Students);
         }
 
-        [Route("{classname}/teachers")]
-        [HttpGet]
-        public async Task<List<Teacher>> GetAllTeacherssOfClass(string classname)
-        {
-            return await Task.Run(() => _context.GetStudentClass(classname).Result.TeachersOfTheClass);
-        }
+        //[Route("{classname}/teachers")]
+        //[HttpGet]
+        //public async Task<List<Teacher>> GetAllTeachersOfClass(string classname)
+        //{
+        //    return await Task.Run(() => _context.GetStudentClass(classname).Result);
+        //}
 
         /*
          * needs:
@@ -86,7 +86,7 @@ namespace ChalkCode.Controllers
         public async Task AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
         {
             var student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]));
-            await _context.AddNewStudentToClass(className, student);
+            await _context.AddNewStudent(className, student);
         }
 
         [Route("delete-user")]

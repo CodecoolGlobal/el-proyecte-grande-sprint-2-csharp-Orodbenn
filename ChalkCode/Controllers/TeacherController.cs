@@ -98,20 +98,28 @@ namespace ChalkCode.Controllers
         {
             await _schoolContext.UpdateTeacher(teacherId, postBody);
         }
-
+        
         [Route("{id}/showhomework")]
         [HttpGet]
         public async Task<List<Homework>> getHomeworks(string id)
         {
-            var homeworks = await _schoolContext.GetHomeworkForTeacher(id);
+            var homeworks = await _schoolContext.GetHomeworkForTeacher((long)int.Parse(id));
             return homeworks;
         }
 
+        /*
+         *  needs:
+         * {
+         *    "studentClass": {string},
+         *    "subject": {string},
+         *    "description": {string}
+         * }
+         */
         [Route("{id}/addhomework")]
         [HttpPost]
-        public async Task<ActionResult> addHomework(string id, [FromBody] Homework homework)
+        public async Task<ActionResult> AddHomework(string id, [FromBody] Dictionary<string, string> formBody)
         {
-            await _schoolContext.AddHomework(homework, id);
+            await _schoolContext.AddHomework(formBody, id);
             return Ok();
         }
 

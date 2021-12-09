@@ -77,9 +77,10 @@ namespace Database
             await SaveChangesAsync();
         }
 
-        public async Task AddNewStudentToClass(string studentClass, Student student)
+        public async Task AddNewStudent(string className, Student student)
         {
-            var classForChange = FindClass(studentClass);
+            Students.Add(student);
+            var classForChange = FindClass(className);
             student.AssignId(classForChange.Result.classIdentifier);
             classForChange.Result.addStudent(student);
             StudentClasses.Update(classForChange.Result);
@@ -96,6 +97,7 @@ namespace Database
                 {
                     classIdentifier = classIdentifier
                 };
+                newClass.className = newClass.getClassName();
                 StudentClasses.Add(newClass);
             }
 
@@ -122,7 +124,7 @@ namespace Database
 
         public async Task<Student> GetStudent(string studentId)
         {
-            return await FindStudent(studentId);
+            return await Students.FindAsync((long)int.Parse(studentId));
         }
 
         /*
@@ -234,7 +236,6 @@ namespace Database
         }
 
         /* methods for TeacherController */
-
         public async Task<List<Teacher>> GetAllTeachers()
         {
             return await Teachers.ToListAsync();
@@ -249,10 +250,10 @@ namespace Database
 
         public async Task<Teacher> GetTeacherById(string teacherId)
         {
-            return await Teachers.FindAsync(teacherId);
+            return await Teachers.FindAsync((long)int.Parse(teacherId));
         }
 
-        public async Task<List<Homework>> GetHomeworkForTeacher(string teacherId)
+        public async Task<List<Homework>> GetHomeworkForTeacher(long teacherId)
         {
             var teacher = await Teachers.FindAsync(teacherId);
             List<Homework> homeworkByTeacher = Homework.Where(homework => homework.teacher == teacher).ToList();
@@ -260,22 +261,27 @@ namespace Database
             return await Task<List<Homework>>.Run(() => homeworkByTeacher);
         }
 
-        public async Task AddHomework(Homework homework, string teacherId)
+        public async Task AddHomework(Dictionary<string, string> homeworkData, string teacherId)
         {
+            Util util = new Util();
+            var teacher = Teachers.FindAsync((long) int.Parse(teacherId)).Result;
+            var homework = new Homework(FindClass(homeworkData["studentClass"]).Result,
+                util.checkSubject(homeworkData["subject"]), homeworkData["desc"], teacher);
+            teacher.AddHomeWork(homework);
             Homework.Add(homework);
-            Teachers.FindAsync(teacherId).Result.AddHomeWork(homework);
+            Teachers.Update(teacher);
             await SaveChangesAsync();
         }
 
         public async Task AddMark(Dictionary<string, string> markData)
         {
             Util util = new Util();
-            
+
             var student = FindStudent(markData["studentId"]).Result;
             var teacher = Teachers.FindAsync(markData["teacherId"]).Result;
             var mark = new Mark(int.Parse(markData["value"]), teacher, util.checkSubject(markData["value"]),
                 util.checkMarkweight(markData["weight"]));
-            
+
             student.AddMark(mark);
             Students.Update(student);
             await SaveChangesAsync();
@@ -322,7 +328,7 @@ namespace Database
             mark.Subject = util.checkSubject(markData["subject"]);
             mark.Weight = util.checkMarkweight(markData["weight"]);
             mark.MarkValue = int.Parse(markData["value"]);
-            
+
             Mark.Update(mark);
             await SaveChangesAsync();
         }

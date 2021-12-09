@@ -14,11 +14,10 @@ namespace Core
         public long ID { get; set; }
         public int grade { get; set; }
         public int classRoom { get; set; } // can be changed if letters are involved as well
+        public string className { get; set; }
         public string classIdentifier { get; set;  } // 9a vs 9b and so on
-
         public List<Homework> Homework { get; set;  } = new List<Homework>();
         public List<Student> Students { get; set;  } = new List<Student>();
-        public List<Teacher> TeachersOfTheClass { get; set;  } = new List<Teacher>();
 
         public StudentClass(int grade)
         {
@@ -46,16 +45,6 @@ namespace Core
         public void removeStudent(Student studentToRemove)
         {
             Students.Remove(studentToRemove);
-        }
-
-        public void addTeacher(Teacher teacher)
-        {
-            TeachersOfTheClass.Add(teacher);
-        }
-
-        public void removeTeacher(Teacher teacherToRemove)
-        {
-            TeachersOfTheClass.Remove(teacherToRemove);
         }
 
         public string getClassName()
