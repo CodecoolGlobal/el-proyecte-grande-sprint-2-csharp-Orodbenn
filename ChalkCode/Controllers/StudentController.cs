@@ -49,7 +49,7 @@ namespace ChalkCode.Controllers
             return await Task<HashSet<Parent>>.Run(() => _context.GetParents(studentId).Result);
         }
 
-        [Route("marks")]
+        [Route("mark")]
         [HttpGet]
         public async Task<List<Mark>> GetMarksOfAStudent(string studentId)
         {

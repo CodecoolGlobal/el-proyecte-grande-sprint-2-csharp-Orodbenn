@@ -124,7 +124,7 @@ namespace ChalkCode.Controllers
          *    "subject": {string},
          *    "weight": {string}
          */
-        [Route("give-mark")]
+        [Route("mark")]
         [HttpPost]
         public async Task AddMark([FromBody] Dictionary<string, string> formData)
         {
@@ -142,6 +142,33 @@ namespace ChalkCode.Controllers
         public async Task UpdateHomework([FromBody] Dictionary<string, string> formBody)
         {
             await _schoolContext.UpdateHomework(formBody);
+        }
+
+        /*
+         * needs:
+         * {
+         *    "markId": {string},
+         *    "value": {string},
+         *    "subject": {string},
+         *    "weight": {string}
+         */
+        [Route("mark")]
+        [HttpPut]
+        public async Task UpdateMark([FromBody] Dictionary<string, string> formData)
+        {
+            await _schoolContext.UpdateMark(formData);
+        }
+
+        /*
+         * needs:
+         * {
+         *    "markId": {string}
+         */
+        [Route("mark")]
+        [HttpDelete]
+        public async Task DeleteMark(string markId)
+        {
+            await _schoolContext.DeleteMark(markId);
         }
     }
 }

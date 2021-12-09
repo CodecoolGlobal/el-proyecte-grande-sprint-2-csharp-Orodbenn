@@ -314,6 +314,27 @@ namespace Database
             await SaveChangesAsync();
         }
 
+        public async Task UpdateMark(Dictionary<string, string> markData)
+        {
+            Util util = new Util();
+
+            var mark = Mark.FindAsync(markData["markId"]).Result;
+            mark.Subject = util.checkSubject(markData["subject"]);
+            mark.Weight = util.checkMarkweight(markData["weight"]);
+            mark.MarkValue = int.Parse(markData["value"]);
+            
+            Mark.Update(mark);
+            await SaveChangesAsync();
+        }
+
+        public async Task DeleteMark(string markId)
+        {
+            var mark = Mark.FindAsync(markId.LongCount()).Result;
+            Mark.Remove(mark);
+            await SaveChangesAsync();
+        }
+
+
         /*
         public DbSet<Student> Students { get; set; }
         public DbSet<Room> Rooms { get; set; }
