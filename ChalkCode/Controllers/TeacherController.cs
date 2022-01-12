@@ -35,13 +35,7 @@ namespace ChalkCode.Controllers
             return Teachers;
         }
 
-        [Route("addteacher")]
-        [HttpPost]
-        public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
-        {
-            await _schoolContext.AddTeacher(teacher);
-            return Ok();
-        }
+
 
         [Route("{id}")]
         [HttpGet]
@@ -63,27 +57,7 @@ namespace ChalkCode.Controllers
          *    "email": {string}
          * }
          */
-        [Route("{teacherId}/add-contact")]
-        [HttpPost]
-        public async Task AddContacts(string teacherId, [FromBody] Dictionary<string, string> postBody)
-        {
-            if (postBody.Count == 1)
-            {
-                if (postBody.ContainsKey("email"))
-                {
-                    await _schoolContext.SaveEmailTeacher(teacherId, postBody);
-                }
-                else
-                {
-                    await _schoolContext.SavePhoneNumberTeacher(teacherId, postBody);
-                }
-            }
-            else
-            {
-                await _schoolContext.SaveEmailTeacher(teacherId, postBody);
-                await _schoolContext.SavePhoneNumberTeacher(teacherId, postBody);
-            }
-        }
+
 
         /*
          * needs:

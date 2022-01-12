@@ -31,7 +31,7 @@ namespace ChalkCode.Controllers
         public async Task<List<StudentClass>> GetClasses()
         {
             return await Task<List<StudentClass>>.Run(() => _context.GetStudentClasses().Result);
-        }        
+        }
 
         [Route("{studentClass}/room")]
         [HttpGet]
@@ -67,6 +67,20 @@ namespace ChalkCode.Controllers
             return await Task.Run(() => _context.GetStudentClass(classname).Result.Students);
         }
 
+        [Route("setparents")]
+        [HttpPost]
+        public async Task AddParent(string studentId, [FromBody] Dictionary<string, string> postBody)
+        {
+            await _context.AddParentOfStudent(studentId, postBody);
+        }
+
+        [Route("parents/{parentid}")]
+        [HttpPut]
+        public async Task ChangeInfoParent(string parentId, [FromBody] Dictionary<string, string> postBody)
+        {
+            await _context.UpdateStudentParent(parentId, postBody);
+        }
+
         //[Route("{classname}/teachers")]
         //[HttpGet]
         //public async Task<List<Teacher>> GetAllTeachersOfClass(string classname)
@@ -81,37 +95,12 @@ namespace ChalkCode.Controllers
          *    "birthDate": {string}
          * }
          */
-        [Route("{className}/add-new-student")]
-        [HttpPost]
-        public async Task AddNewStudent(string className, [FromBody] Dictionary<string, string> postBody)
-        {
-            var student = new Student(postBody["name"], DateTime.Parse(postBody["birthDate"]));
-            await _context.AddNewStudent(className, student);
-        }
 
-        [Route("delete-user")]
-        [HttpDelete]
-        public async Task DeleteUser(string userId)
-        {
-            await _context.DeleteUser(userId);
-        }
 
         /* 
          * needs:
          * { "numberOfClasses": {int} }
          */
-        [Route("add-new-classes")]
-        [HttpPost]
-        public async Task AddNewClasses([FromBody] Dictionary<string, int> postBody)
-        {
-            await _context.AddNewClasses(postBody["numberOfClasses"]);
-        }
 
-        [Route("end-of-year")]
-        [HttpPost]
-        public async Task EndOfYear()
-        {
-            await _context.EndOfYear();
-        }
     }
 }

@@ -35,12 +35,7 @@ namespace ChalkCode.Controllers
          *    "newClassId": {string}
          * }
          */
-        [Route("change-class")]
-        [HttpPost]
-        public async Task ChangeClassOfStudent(string studentId, [FromBody] Dictionary<string, string> postBody)
-        {
-            await _context.ChangeClassOfStudent(studentId, postBody);
-        }
+
 
         [Route("parents")]
         [HttpGet]
@@ -48,7 +43,6 @@ namespace ChalkCode.Controllers
         {
             return await Task<HashSet<Parent>>.Run(() => _context.GetParents(studentId).Result);
         }
-
         [Route("mark")]
         [HttpGet]
         public async Task<List<Mark>> GetMarksOfAStudent(string studentId)
@@ -98,12 +92,7 @@ namespace ChalkCode.Controllers
          *    "name": {string}
          * }
          */
-        [Route("parents")]
-        [HttpPost]
-        public async Task AddParent(string studentId, [FromBody] Dictionary<string, string> postBody)
-        {
-            await _context.AddParentOfStudent(studentId, postBody);
-        }
+
 
         /*
          * needs:
@@ -142,12 +131,7 @@ namespace ChalkCode.Controllers
          *    "birthDate": {string}
          * }
          */
-        [Route("parents/{parentid}")]
-        [HttpPut]
-        public async Task ChangeInfoParent(string parentId, [FromBody] Dictionary<string, string> postBody)
-        {
-            await _context.UpdateStudentParent(parentId, postBody);
-        }
+
 
         /*
          * needs:
