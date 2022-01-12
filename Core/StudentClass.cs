@@ -17,6 +17,7 @@ namespace Core
         public string className { get; set; }
         public string classIdentifier { get; set;  } // 9a vs 9b and so on
         public List<Homework> Homework { get; set;  } = new List<Homework>();
+        public List<Teacher> teachers { get; set; } = new List<Teacher>();
         public List<Student> Students { get; set;  } = new List<Student>();
 
         public StudentClass(int grade)
@@ -36,7 +37,14 @@ namespace Core
 
             return null;
         }
-
+        public Teacher GetTeacher(Teacher t)
+        {
+            if (teachers.Contains(t))
+            {
+                return teachers[teachers.IndexOf(t)];
+            }
+            return null;
+        }
         public void addStudent(Student student)
         {
             Students.Add(student);
