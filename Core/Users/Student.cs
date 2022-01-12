@@ -12,6 +12,9 @@ namespace Core.Users
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public List<Mark> marks { get; set; } = new List<Mark>();
+
+        public List<Teacher> teachers { get; set; } = new List<Teacher>();
+
         public HashSet<Parent> parents { get; set; } = new HashSet<Parent>();
         //public Homework homeworks { get; }
         public Dictionary<Subject, DateTime> exams;
@@ -28,6 +31,11 @@ namespace Core.Users
         {
             PersonalId = "S" + DateTime.Now.Year.ToString()[2..] + classId[^1].ToString().ToUpper() + name.Substring(0, 1).ToUpper() + 
                          name.Substring(name.IndexOf(" ") + 1, 2).ToUpper();
+        }
+
+        public void AddTeacher(Teacher t)
+        {
+            teachers.Add(t);
         }
 
         public void AddParent(Parent parent)
