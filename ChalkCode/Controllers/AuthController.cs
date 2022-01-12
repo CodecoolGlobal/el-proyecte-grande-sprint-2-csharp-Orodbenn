@@ -1,9 +1,12 @@
 ﻿using Core.Users;
 using Database;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
 
@@ -22,9 +25,23 @@ namespace ChalkCode.Controllers
 
         [Route("auth")]
         [HttpPost]
-        public async Task AuthUser([FromBody] Dictionary<string,string>Credentials)
+        public async Task<IActionResult> AuthUser([FromBody] Dictionary<string,string>Credentials)
         {
-            await _context.GetTeacher(Credentials["Username"],Credentials["Password"]);
+           var auth = await _context.GetTeacher(Credentials["Username"],Credentials["Password"]);
+            if(auth == null)
+            {
+                return BadRequest();
+            }
+            else
+            {
+                var claims = new List<Claim>();
+                claims.Add(new Claim("Username", Credentials["Username"]));
+                claims.Add(new Claim("Password", Credentials["Password"]));
+                var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
+                var claimPrincipal = new ClaimsPrincipal(claimIdentity);
+                await HttpContext.SignInAsync(claimPrincipal);
+                return Ok();
+            }
             
         }
     }
