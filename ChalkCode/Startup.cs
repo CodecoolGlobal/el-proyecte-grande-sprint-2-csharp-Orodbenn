@@ -14,6 +14,7 @@ using Microsoft.Extensions.Hosting;
 using System.Web.Http;
 using Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 namespace ChalkCode
 {
@@ -32,6 +33,11 @@ namespace ChalkCode
         {
             services.AddDbContext<SchoolContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+
+                });
             
             services.AddControllersWithViews();
             //services.AddSingleton<IRepository<School>>(x => new SchoolRepository());
@@ -67,6 +73,7 @@ namespace ChalkCode
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {
