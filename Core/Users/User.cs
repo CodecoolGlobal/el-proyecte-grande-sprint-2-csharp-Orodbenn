@@ -14,6 +14,7 @@ namespace Core.Users
         public string name { get; set; }
         public DateTime DateOfBirth { get; set; }
         public string PhoneNumber { get; set; }
+        public string Password { get; set; }
         public string Email { get; set; }
         public string PersonalId { get; set; }
 
@@ -26,6 +27,7 @@ namespace Core.Users
         {
             this.name = name;
             DateOfBirth = dateOfBirth;
+            Password = "password123";
         }
 
         protected User()
