@@ -252,6 +252,21 @@ namespace Database
         {
             return await Teachers.FindAsync((long)int.Parse(teacherId));
         }
+        public async Task<Teacher> GetTeacher(string username, string password)
+        {
+            var teacher = await Teachers.FirstAsync(t => t.name == username);
+
+            if(teacher == null || !teacher.Password.Equals(password))
+            {
+                
+                return null;
+            }
+            else
+            {
+                return teacher;
+            }
+            
+        }
 
         public async Task<List<Homework>> GetHomeworkForTeacher(long teacherId)
         {
