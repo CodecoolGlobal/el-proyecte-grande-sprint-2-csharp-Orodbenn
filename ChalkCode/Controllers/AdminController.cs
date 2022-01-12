@@ -1,6 +1,7 @@
 ﻿using Core.Marks;
 using Core.Users;
 using Database;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -13,6 +14,7 @@ namespace ChalkCode.Controllers
     [ApiController]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
     [Route("admin")]
+    [Authorize]
     public class AdminController : Controller
     {
         private readonly SchoolContext _context;
