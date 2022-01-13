@@ -4,10 +4,13 @@ using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Security.Claims;
+using System.Text;
 using System.Threading.Tasks;
 using System.Web.Http.Cors;
 
@@ -35,23 +38,43 @@ namespace ChalkCode.Controllers
             }
             else
             {
-                var claims = new List<Claim>();
-                claims.Add(new Claim("Username", Credentials["Username"]));
-                claims.Add(new Claim("Password", Credentials["Password"]));
-                var claimIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
-                var claimPrincipal = new ClaimsPrincipal(claimIdentity);
-                await HttpContext.SignInAsync(claimPrincipal);
-                return Ok(auth.Role);
+                var token = GenerateToken(auth);
+                return new ObjectResult(token);
             }
             
         }
+        private async Task<dynamic> GenerateToken(Teacher auth)
+        {
+            var claims = new List<Claim>();
+            claims.Add(new Claim(ClaimTypes.Name, auth.name));
+            claims.Add(new Claim(ClaimTypes.NameIdentifier, auth.name));
+            claims.Add(new Claim(ClaimTypes.Role, auth.Role));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToString()));
+            claims.Add(new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToString()));
+            
 
-        [Authorize]
+            
+            var token = new JwtSecurityToken(
+                new JwtHeader(
+                    new SigningCredentials
+                    (new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ultimate_top_secret_key_dont_tell_them")), //For testing fine asis but this needs to be secure
+                    SecurityAlgorithms.HmacSha256)),
+                    new JwtPayload(claims)
+                );
+            var output = new
+            {
+                Access_token = new JwtSecurityTokenHandler().WriteToken(token),
+                Username = auth.name
+            };
+
+            return output;
+        }
+        [AuthorizeWithToken]
         [HttpGet]
-        [Route("logout")]
+        [Route("auth")]
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.SignOutAsync();
+            
             return Ok();
         }
     }
