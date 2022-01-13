@@ -15,6 +15,9 @@ using System.Web.Http;
 using Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ChalkCode
 {
@@ -33,11 +36,24 @@ namespace ChalkCode
         {
             services.AddDbContext<SchoolContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options =>
-                {
-
-                });
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            }).AddJwtBearer("JwtBearer", jwtBearerOptions =>
+             {
+                 jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuerSigningKey = true,
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ultimate_top_secret_key_dont_tell_them")),
+                     ValidateIssuer = false,
+                     ValidateAudience = false,
+                     ValidateLifetime = true,
+                     ClockSkew = TimeSpan.FromMinutes(5)
+                 };
+             }
+            );
+               
             
             services.AddControllersWithViews();
             //services.AddSingleton<IRepository<School>>(x => new SchoolRepository());
@@ -73,6 +89,7 @@ namespace ChalkCode
             app.UseRouting();
 
             app.UseAuthorization();
+            
             app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
