@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using ChalkCode.Controllers;
 using Core;
-using Core.DAL;
+//using Core.DAL;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -14,6 +14,10 @@ using Microsoft.Extensions.Hosting;
 using System.Web.Http;
 using Database;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 namespace ChalkCode
 {
@@ -32,9 +36,27 @@ namespace ChalkCode
         {
             services.AddDbContext<SchoolContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection")));
+            services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = "JwtBearer";
+                options.DefaultChallengeScheme = "JwtBearer";
+            }).AddJwtBearer("JwtBearer", jwtBearerOptions =>
+             {
+                 jwtBearerOptions.TokenValidationParameters = new TokenValidationParameters
+                 {
+                     ValidateIssuerSigningKey = true,
+                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ultimate_top_secret_key_dont_tell_them")),
+                     ValidateIssuer = false,
+                     ValidateAudience = false,
+                     ValidateLifetime = true,
+                     ClockSkew = TimeSpan.FromMinutes(5)
+                 };
+             }
+            );
+               
             
             services.AddControllersWithViews();
-            services.AddSingleton<IRepository<School>>(x => new SchoolRepository());
+            //services.AddSingleton<IRepository<School>>(x => new SchoolRepository());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -67,6 +89,8 @@ namespace ChalkCode
             app.UseRouting();
 
             app.UseAuthorization();
+            
+            app.UseAuthentication();
 
             app.UseEndpoints(endpoints =>
             {

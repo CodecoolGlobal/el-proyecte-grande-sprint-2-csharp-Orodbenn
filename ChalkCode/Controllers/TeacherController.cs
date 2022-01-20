@@ -8,15 +8,15 @@ using Core.Users;
 using Core;
 using Core.Utils;
 using Core.Marks;
-using Core.DAL;
+//using Core.DAL;
 using System.Web.Http.Cors;
 using Database;
 
 namespace ChalkCode.Controllers
 {
-    
     [ApiController]
     [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
+    [Route("school")]
     public class TeacherController : ControllerBase
     {
         Util util = new Util();
@@ -26,52 +26,131 @@ namespace ChalkCode.Controllers
         {
             _schoolContext = context;
         }
-        [Route("school/teacher")]
+
+        [Route("")]
         [HttpGet]
         public async Task<List<Teacher>> getTeachers()
         {
             var Teachers = await _schoolContext.GetAllTeachers();
             return Teachers;
         }
-        [Route("school/addteacher")]
-        [HttpPost]
-        public async Task<ActionResult> AddTeacher([FromBody] Teacher teacher)
-        {
-            await _schoolContext.AddTeacher(teacher);
-            return Ok();
-        }
 
-        
-        [Route("school/teacher/{id}")]
+
+
+        [Route("{id}")]
         [HttpGet]
-        public async Task<ActionResult> getTeacher(int id)
+        public async Task<ActionResult> getTeacher(string id)
         {
             var teachers = await _schoolContext.GetTeacherById(id);
             if (teachers == null)
             {
                 return NotFound();
             }
-            return Ok(teachers);
 
+            return Ok(teachers);
+        }
+
+        /*
+         * needs:
+         * {
+         *    "phone": {string},
+         *    "email": {string}
+         * }
+         */
+
+
+        /*
+         * needs:
+         * {
+         *    "name": {string},
+         *    "birthDate": {string}
+         * }
+         */
+        [Route("{teacherId}")]
+        [HttpPut]
+        public async Task ChangeInfo(string teacherId, [FromBody] Dictionary<string, string> postBody)
+        {
+            await _schoolContext.UpdateTeacher(teacherId, postBody);
         }
         
-        [Route("school/teacher/{id}/showhomework")]
+        [Route("{id}/showhomework")]
         [HttpGet]
-        public async Task<List<Homework>> getHomeworks(int id)
+        public async Task<List<Homework>> getHomeworks(string id)
         {
-            var homeworks = await _schoolContext.GetHomeworkForTeacher(id);
+            var homeworks = await _schoolContext.GetHomeworkForTeacher((long)int.Parse(id));
             return homeworks;
         }
-        
-       [Route ("school/teacher/{id}/addhomework")]
-       [HttpPost]
-        public async Task<ActionResult> addHomework(int id,[FromBody] Homework homework)
+
+        /*
+         *  needs:
+         * {
+         *    "studentClass": {string},
+         *    "subject": {string},
+         *    "description": {string}
+         * }
+         */
+        [Route("{id}/addhomework")]
+        [HttpPost]
+        public async Task<ActionResult> AddHomework(string id, [FromBody] Dictionary<string, string> formBody)
         {
-            await _schoolContext.AddHomework(homework, id);
+            await _schoolContext.AddHomework(formBody, id);
             return Ok();
         }
-        
 
+        /*
+         * needs:
+         * {
+         *    "studentId": {string},
+         *    "teacherId": {string},
+         *    "value": {string},
+         *    "subject": {string},
+         *    "weight": {string}
+         */
+        [Route("mark")]
+        [HttpPost]
+        public async Task AddMark([FromBody] Dictionary<string, string> formData)
+        {
+            await _schoolContext.AddMark(formData);
+        }
 
+        /*
+         * needs:
+         * {
+         *    "homeworkId": {string},
+         *    "desc": {string}
+         */
+        [Route("update-homework")]
+        [HttpPut]
+        public async Task UpdateHomework([FromBody] Dictionary<string, string> formBody)
+        {
+            await _schoolContext.UpdateHomework(formBody);
+        }
+
+        /*
+         * needs:
+         * {
+         *    "markId": {string},
+         *    "value": {string},
+         *    "subject": {string},
+         *    "weight": {string}
+         */
+        [Route("mark")]
+        [HttpPut]
+        public async Task UpdateMark([FromBody] Dictionary<string, string> formData)
+        {
+            await _schoolContext.UpdateMark(formData);
+        }
+
+        /*
+         * needs:
+         * {
+         *    "markId": {string}
+         */
+        [Route("mark")]
+        [HttpDelete]
+        public async Task DeleteMark(string markId)
+        {
+            await _schoolContext.DeleteMark(markId);
+        }
     }
 }

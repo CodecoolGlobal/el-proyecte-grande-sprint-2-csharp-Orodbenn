@@ -1,4 +1,4 @@
-﻿using System;
+﻿/*using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
@@ -89,9 +89,9 @@ namespace Core
             const int asciiForA = 65;
             for (var i = 0; i < numberOfNewClasses; i++)
             {
-                var newClass = new StudentClass((Convert.ToChar(asciiForA + i)).ToString());
+                var newClass = new StudentClass(9);
                 _classesInTheSchool.Add(newClass);
             }
         }
     }
-}
+}*/
