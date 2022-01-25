@@ -46,8 +46,10 @@ namespace ChalkCode
                  {
                      ValidateIssuerSigningKey = true,
                      IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ultimate_top_secret_key_dont_tell_them")),
-                     ValidateIssuer = false,
-                     ValidateAudience = false,
+                     ValidateIssuer = true,
+                     
+                     ValidateAudience = true,
+                     
                      ValidateLifetime = true,
                      ClockSkew = TimeSpan.FromMinutes(5)
                  };

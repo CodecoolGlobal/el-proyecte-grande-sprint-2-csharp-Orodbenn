@@ -69,7 +69,7 @@ namespace ChalkCode.Controllers
 
             return output;
         }
-        [AuthorizeWithToken]
+        
         [HttpGet]
         [Route("auth")]
         public async Task<IActionResult> Logout()

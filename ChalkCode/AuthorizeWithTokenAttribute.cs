@@ -18,7 +18,7 @@ namespace ChalkCode
             
             var token = context.HttpContext.Request.Headers ["Authorization"].FirstOrDefault()?.Split(".").ToArray();//0 header 1 Payload 2 signiture
             var ogHeader = ComputeSha256Hash(token[0]+"."+token[1]);
-            //Okay im done...
+            
             if (token == null || !ogHeader.Equals(Encoding.UTF8.GetBytes("Ultimate_top_secret_key_dont_tell_them")))
             {
                 // not logged in
