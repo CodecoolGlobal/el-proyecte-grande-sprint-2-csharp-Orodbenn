@@ -1,5 +1,7 @@
-﻿using Core.Users;
+﻿using ChalkCode.Auth;
+using Core.Users;
 using Database;
+using JWTWebAuthentication.Repository;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
@@ -21,10 +23,12 @@ namespace ChalkCode.Controllers
     public class AuthController : Controller
     {
         private readonly SchoolContext _context;
+        private readonly IJWTManagerRepository _jWTManager;
 
-        public AuthController(SchoolContext context)
+        public AuthController(SchoolContext context, IJWTManagerRepository jWTManager)
         {
             _context = context;
+            this._jWTManager = jWTManager;
         }
 
         [Route("auth")]
@@ -38,40 +42,16 @@ namespace ChalkCode.Controllers
             }
             else
             {
-                var token = GenerateToken(auth);
-                return new ObjectResult(token);
+                var token = _jWTManager.Authenticate(auth);
+                return Ok(token);
             }
             
         }
-        private async Task<dynamic> GenerateToken(Teacher auth)
-        {
-            var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, auth.name));
-            claims.Add(new Claim(ClaimTypes.NameIdentifier, auth.name));
-            claims.Add(new Claim(ClaimTypes.Role, auth.Role));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Nbf, new DateTimeOffset(DateTime.Now).ToString()));
-            claims.Add(new Claim(JwtRegisteredClaimNames.Exp, new DateTimeOffset(DateTime.Now.AddDays(1)).ToString()));
-            
-
-            
-            var token = new JwtSecurityToken(
-                new JwtHeader(
-                    new SigningCredentials
-                    (new SymmetricSecurityKey(Encoding.UTF8.GetBytes("Ultimate_top_secret_key_dont_tell_them")), //For testing fine asis but this needs to be secure
-                    SecurityAlgorithms.HmacSha256)),
-                    new JwtPayload(claims)
-                );
-            var output = new
-            {
-                Access_token = new JwtSecurityTokenHandler().WriteToken(token),
-                Username = auth.name
-            };
-
-            return output;
-        }
+        
         
         [HttpGet]
         [Route("auth")]
+        [Authorize]
         public async Task<IActionResult> Logout()
         {
             
