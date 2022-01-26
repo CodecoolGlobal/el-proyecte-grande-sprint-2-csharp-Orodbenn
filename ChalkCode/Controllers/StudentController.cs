@@ -10,7 +10,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace ChalkCode.Controllers
 {
     [ApiController, Route("/students/{studentId}")]
-    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
+    [EnableCors(origins: "https://orange-pond-00dd1b803.1.azurestaticapps.net", headers: "*", methods: "*")]
     public class StudentController : Controller
     {
         

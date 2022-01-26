@@ -15,7 +15,7 @@ using Database;
 namespace ChalkCode.Controllers
 {
     [ApiController]
-    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
+    [EnableCors(origins: "https://orange-pond-00dd1b803.1.azurestaticapps.net", headers: "*", methods: "*")]
     [Route("school")]
     public class TeacherController : ControllerBase
     {
