@@ -29,6 +29,7 @@ namespace Core.Users
             this.name = name;
             DateOfBirth = dateOfBirth;
             Password = "password123";
+            Role = "User";
         }
 
         protected User()
