@@ -28,13 +28,13 @@ namespace ChalkCode.Auth
 
 			var tokenHandler = new JwtSecurityTokenHandler();
 			var tokenKey = Encoding.UTF8.GetBytes(iconfiguration["JWT:Key"]);
+			var claims = new List<Claim>();
+			claims.Add(new Claim(ClaimTypes.Name, users.name));
+			claims.Add(new Claim(ClaimTypes.NameIdentifier, users.name));
+			claims.Add(new Claim(ClaimTypes.Role, users.Role));
 			var tokenDescriptor = new SecurityTokenDescriptor
 			{
-				Subject = new ClaimsIdentity(new Claim[]
-			  {
-			 new Claim(ClaimTypes.Name, users.name),
-			 new Claim(ClaimTypes.NameIdentifier, users.name)
-			  }),
+				Subject = new ClaimsIdentity(claims),
 				Expires = DateTime.UtcNow.AddMinutes(10),
 				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
 			};

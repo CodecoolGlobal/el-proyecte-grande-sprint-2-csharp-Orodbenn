@@ -12,7 +12,7 @@ namespace Core.Users
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public List<Subject> subjects = new List<Subject>();
-        public string Role { get; set; } = "Teacher";
+        
         public List<Homework> homeworks { get; set; } = new List<Homework>();
         public Teacher(string name) : base(name)
         {
