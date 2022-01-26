@@ -10,7 +10,7 @@ namespace JWTWebAuthentication.Repository
 {
     public interface IJWTManagerRepository
     {
-        Tokens Authenticate(User users);
+        Task<Tokens> Authenticate(User users);
     }
 
 }

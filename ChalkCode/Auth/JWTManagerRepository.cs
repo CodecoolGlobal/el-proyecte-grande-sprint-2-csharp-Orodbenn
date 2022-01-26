@@ -22,7 +22,7 @@ namespace ChalkCode.Auth
 		{
 			this.iconfiguration = iconfiguration;
 		}
-		public Tokens Authenticate(User users)
+		public async Task<Tokens> Authenticate(User users)
         {
 			
 
@@ -33,13 +33,13 @@ namespace ChalkCode.Auth
 				Subject = new ClaimsIdentity(new Claim[]
 			  {
 			 new Claim(ClaimTypes.Name, users.name),
-			 new Claim(ClaimTypes.Role, users.Role)
+			 new Claim(ClaimTypes.NameIdentifier, users.name)
 			  }),
 				Expires = DateTime.UtcNow.AddMinutes(10),
 				SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(tokenKey), SecurityAlgorithms.HmacSha256Signature)
 			};
 			var token = tokenHandler.CreateToken(tokenDescriptor);
-			return new Tokens { Token = tokenHandler.WriteToken(token) };
+			return await Task<Tokens>.Run(()=> new Tokens { Token = tokenHandler.WriteToken(token) });
 		}
     }
 }

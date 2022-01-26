@@ -42,7 +42,7 @@ namespace ChalkCode.Controllers
             }
             else
             {
-                var token = _jWTManager.Authenticate(auth);
+                var token = await _jWTManager.Authenticate(auth);
                 return Ok(token);
             }
             
