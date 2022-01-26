@@ -12,9 +12,8 @@ using System.Web.Http.Cors;
 namespace ChalkCode.Controllers
 {
     [ApiController]
-    [EnableCors(origins: "http://localhost:3000", headers: "*", methods: "*")]
+    [EnableCors(origins: "https://orange-pond-00dd1b803.1.azurestaticapps.net", headers: "*", methods: "*")]
     [Route("admin")]
-    [Authorize]
     public class AdminController : Controller
     {
         private readonly SchoolContext _context;

@@ -92,9 +92,9 @@ namespace ChalkCode
                 .AllowCredentials()); // allow credentials
 
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
+
 
             app.UseEndpoints(endpoints =>
             {
