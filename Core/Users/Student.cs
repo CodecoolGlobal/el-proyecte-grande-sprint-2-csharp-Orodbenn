@@ -11,7 +11,6 @@ namespace Core.Users
     public class Student : User
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public StudentClass Class { get; set; }
         public List<Mark> marks { get; set; } = new List<Mark>();
 
         public List<Teacher> teachers { get; set; } = new List<Teacher>();
