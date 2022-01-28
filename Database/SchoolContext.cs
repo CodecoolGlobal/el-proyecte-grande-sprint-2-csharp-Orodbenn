@@ -33,7 +33,9 @@ namespace Database
 
         public async Task<List<StudentClass>> GetStudentClasses()
         {
-            return await StudentClasses.ToListAsync();
+            return await StudentClasses
+            .Include("Students")
+            .ToListAsync();
         }
 
         public async Task DeleteUser(string userId)
